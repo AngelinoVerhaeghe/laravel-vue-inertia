@@ -4,6 +4,14 @@ A small **marketing-style** Laravel application built with **Inertia.js** and **
 
 > **This is a fake / test website.** It is not a real product or service. Placeholder copy, emails, and social links are for demonstration and learning only. Do not treat any of it as official or production-ready without your own review and hardening.
 
+## Preview
+
+The image below is normal Markdown (not inside a code block), so it should render on GitHub and in most editor previews. [Open the file directly](./docs/screenshots/home.png) if it does not show.
+
+[![Home page screenshot](./docs/screenshots/home.png)](./docs/screenshots/home.png)
+
+_Click the image to open it on GitHub (larger view / download)._
+
 ## Tech stack
 
 - **Backend:** PHP 8.3, Laravel 13
@@ -72,13 +80,19 @@ php artisan serve
 php artisan test --compact
 ```
 
-## Screenshots for GitHub (optional)
+## Adding more README images (optional)
 
-If you want images in the repository README, add them under something like `docs/screenshots/` and reference them with relative paths, for example:
+Put files under `docs/screenshots/`.
+
+**Why you might “not see” an image:** anything between triple backticks (a fenced code block) is shown as **plain text**, not rendered. The example below is only source code to copy—paste it **outside** of a code block if you want a real picture.
+
+Plain image (not clickable on GitHub):
 
 ```markdown
-![Home](docs/screenshots/home.png)
+![alt text](docs/screenshots/home.png)
 ```
+
+The outer `[...](url)` is the link; the inner `![...](url)` is the image.
 
 ## License
 
