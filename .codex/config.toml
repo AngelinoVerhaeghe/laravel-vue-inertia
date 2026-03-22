@@ -1,0 +1,4 @@
+[mcp_servers.laravel-boost]
+command = "wsl.exe"
+args = ["/usr/bin/php8.3", "/mnt/d/Projects/laravel-vue-inertia/artisan", "boost:mcp"]
+cwd = "/mnt/d/Projects/laravel-vue-inertia"
