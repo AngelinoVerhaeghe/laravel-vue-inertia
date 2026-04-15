@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::inertia('/', 'Welcome')->name('home');
+Route::inertia('/sign-in', 'Auth/Signin')->name('login');
+Route::inertia('/register', 'Auth/Register')->name('register');
+Route::inertia('/forgot-password', 'Auth/ForgotPassword')->name('password.request');
 Route::inertia('/contact', 'Contact')->name('contact');
 
 Route::get('/newsletter', [NewsletterSubscriptionController::class, 'create'])->name('newsletter');
