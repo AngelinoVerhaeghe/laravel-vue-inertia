@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { contact, home, newsletter } from '@/routes';
+import { contact, home, login, newsletter, register } from '@/routes';
 import { index as blogIndex } from '@/routes/blog';
 
 defineProps<{
@@ -62,17 +62,17 @@ const navClass = (active: boolean) =>
             </nav>
 
             <div class="flex items-center gap-3">
-                <a
-                    href="#"
+                <Link
+                    :href="login.url()"
                     class="hidden rounded-lg border border-violet-200 bg-white px-3 py-2 text-sm font-medium text-violet-800 shadow-sm transition hover:border-violet-300 hover:bg-violet-50 sm:inline-flex"
                 >
                     Sign in
-                </a>
+                </Link>
                 <Link
-                    :href="newsletter.url()"
-                    class="rounded-lg bg-linear-to-r from-teal-600 to-teal-700 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-teal-600/25 transition hover:from-teal-500 hover:to-teal-600"
+                    :href="register.url()"
+                    class="hidden rounded-lg bg-linear-to-r from-teal-600 to-teal-700 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-teal-600/25 transition hover:from-teal-500 hover:to-teal-600 sm:inline-flex"
                 >
-                    Subscribe
+                    Register
                 </Link>
             </div>
         </div>

@@ -2,7 +2,7 @@
 import SocialLinks from '@/components/SocialLinks.vue';
 import type { SocialLinkItem } from '@/components/SocialLinks.vue';
 import { Link } from '@inertiajs/vue3';
-import { contact, home } from '@/routes';
+import { contact, home, newsletter } from '@/routes';
 import { index as blogIndex } from '@/routes/blog';
 import { cookies, privacy, terms } from '@/routes/legal';
 
@@ -50,6 +50,22 @@ const footerColumns = [
 <template>
     <footer class="border-t border-slate-200 bg-slate-900 text-slate-400">
         <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+            <div class="mb-10 flex flex-col items-start justify-between gap-6 rounded-2xl border border-slate-700/60 bg-slate-800/60 px-6 py-6 sm:flex-row sm:items-center lg:px-8">
+                <div>
+                    <p class="font-heading text-base font-semibold text-white">
+                        Stay in the loop
+                    </p>
+                    <p class="mt-1 text-sm text-slate-400">
+                        One short weekly email on full-stack craft. No spam, unsubscribe any time.
+                    </p>
+                </div>
+                <Link
+                    :href="newsletter.url()"
+                    class="shrink-0 rounded-xl bg-linear-to-r from-teal-500 to-teal-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-teal-900/30 transition hover:from-teal-400 hover:to-teal-500"
+                >
+                    Subscribe for free
+                </Link>
+            </div>
             <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
                 <div class="lg:col-span-1">
                     <p class="font-heading text-lg font-semibold text-white">
