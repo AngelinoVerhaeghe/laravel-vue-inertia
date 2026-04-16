@@ -3,8 +3,9 @@ import {
     create as newsletterPage,
     resend,
 } from '@/actions/App/Http/Controllers/NewsletterSubscriptionController';
+import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { privacy } from '@/routes/legal';
 
 const form = useForm({
@@ -19,7 +20,14 @@ function submit(): void {
 </script>
 
 <template>
-    <Head title="Resend confirmation — Stack Notes" />
+    <SeoHead
+        :seo="{
+            title: 'Resend confirmation — Stack Notes',
+            description:
+                'Didn\u2019t receive your confirmation email? Request a new Stack Notes newsletter confirmation link.',
+            noindex: true,
+        }"
+    />
 
     <MarketingLayout active-nav="newsletter">
         <section

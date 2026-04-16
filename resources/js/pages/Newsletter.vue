@@ -3,8 +3,9 @@ import {
     createResend,
     store,
 } from '@/actions/App/Http/Controllers/NewsletterSubscriptionController';
+import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { privacy } from '@/routes/legal';
 
 const form = useForm({
@@ -19,7 +20,13 @@ function submit(): void {
 </script>
 
 <template>
-    <Head title="Newsletter — Stack Notes" />
+    <SeoHead
+        :seo="{
+            title: 'Newsletter — Stack Notes',
+            description:
+                'Subscribe to the Stack Notes newsletter for periodic field notes on frontend, APIs, databases, and full-stack craft.',
+        }"
+    />
 
     <MarketingLayout active-nav="newsletter">
         <section

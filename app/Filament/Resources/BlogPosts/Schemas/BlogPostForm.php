@@ -164,6 +164,40 @@ class BlogPostForm
                             ->placeholder("Write your post in Markdown...\n\nTip: use fenced code blocks for snippets:\n```php\n// code here\n```")
                             ->helperText('Markdown supported. Use fenced code blocks for snippets (```lang ... ```).'),
                     ]),
+
+                Section::make('SEO')
+                    ->description('Override how this post appears in search engines and social shares. Leave empty to auto-derive from the title and excerpt.')
+                    ->collapsible()
+                    ->collapsed()
+                    ->columnSpanFull()
+                    ->columns([
+                        'default' => 1,
+                        'md' => 2,
+                    ])
+                    ->schema([
+                        TextInput::make('meta_title')
+                            ->label('Meta title')
+                            ->maxLength(180)
+                            ->helperText('Falls back to the post title. Keep under ~60 characters for best results.')
+                            ->columnSpanFull(),
+                        Textarea::make('meta_description')
+                            ->label('Meta description')
+                            ->rows(3)
+                            ->maxLength(320)
+                            ->helperText('Falls back to the excerpt. Aim for 120–160 characters.')
+                            ->columnSpanFull(),
+                        Select::make('meta_og_blog_image_id')
+                            ->label('Social share image')
+                            ->relationship('metaOgImage', 'name')
+                            ->getOptionLabelFromRecordUsing(fn (BlogImage $record): string => $record->name ?: $record->path)
+                            ->searchable()
+                            ->preload()
+                            ->native(false)
+                            ->helperText('Used for OpenGraph/Twitter cards. Falls back to the featured image.'),
+                        Toggle::make('meta_noindex')
+                            ->label('Hide from search engines (noindex)')
+                            ->helperText('Adds <meta name="robots" content="noindex"> and excludes from the sitemap.'),
+                    ]),
             ]);
     }
 }

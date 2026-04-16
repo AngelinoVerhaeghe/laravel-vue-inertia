@@ -56,24 +56,33 @@ const socialLinks = [
                 class="hidden flex-1 items-center justify-center gap-1 md:flex"
                 aria-label="Main navigation"
             >
-                <Link :href="home.url()" :class="navClass(activeNav === 'home')">
+                <Link
+                    :href="home.url()"
+                    :class="navClass(activeNav === 'home')"
+                    :aria-current="activeNav === 'home' ? 'page' : undefined"
+                >
                     Home
                 </Link>
                 <Link
                     :href="blogIndex.url()"
                     :class="navClass(activeNav === 'blog')"
+                    :aria-current="activeNav === 'blog' ? 'page' : undefined"
                 >
                     Blog
                 </Link>
                 <Link
                     :href="contact.url()"
                     :class="navClass(activeNav === 'contact')"
+                    :aria-current="activeNav === 'contact' ? 'page' : undefined"
                 >
                     Contact
                 </Link>
                 <Link
                     :href="newsletter.url()"
                     :class="navClass(activeNav === 'newsletter')"
+                    :aria-current="
+                        activeNav === 'newsletter' ? 'page' : undefined
+                    "
                 >
                     Newsletter
                 </Link>

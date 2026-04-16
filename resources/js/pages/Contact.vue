@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Head } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <Head title="Contact — Stack Notes" />
+    <SeoHead
+        :seo="{
+            title: 'Contact — Stack Notes',
+            description:
+                'Get in touch with Stack Notes about articles, collaborations, or feedback on tutorials and field notes from the stack.',
+        }"
+    />
 
     <MarketingLayout active-nav="contact">
         <section class="relative overflow-hidden border-b border-slate-200/60 bg-white/60">
@@ -31,8 +37,8 @@ import { Head } from '@inertiajs/vue3';
                     Say hello
                 </h1>
                 <p class="mt-4 max-w-2xl text-lg text-slate-600">
-                    Questions, collaborations, or typo reports—drop a note. This
-                    form is a demo; wire it to your backend when you are ready.
+                    Questions, tips for a post, or collaboration ideas—send a
+                    short note and we’ll get back to you.
                 </p>
             </div>
         </section>
@@ -117,9 +123,6 @@ import { Head } from '@inertiajs/vue3';
                                         href="mailto:hello@stacknotes.test"
                                         class="text-teal-700 underline decoration-teal-600/30 underline-offset-2 hover:decoration-teal-600"
                                         >hello@stacknotes.test</a
-                                    >
-                                    <span class="text-slate-500">
-                                        (placeholder)</span
                                     >
                                 </p>
                             </li>

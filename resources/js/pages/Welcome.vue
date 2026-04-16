@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import SeoHead, { type SeoPayload } from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { contact, newsletter } from '@/routes';
 import { index as blogIndex, show as blogShow } from '@/routes/blog';
 
@@ -20,6 +21,7 @@ defineProps<{
         dateTime: string;
         category: string;
     }>;
+    seo?: Partial<SeoPayload> | null;
 }>();
 
 function tagClasses(
@@ -53,7 +55,7 @@ function cardHoverClasses(
 </script>
 
 <template>
-    <Head title="Stack Notes — tech, web & full-stack" />
+    <SeoHead :seo="seo ?? undefined" />
 
     <MarketingLayout active-nav="home">
         <!-- Hero -->
@@ -205,7 +207,19 @@ function cardHoverClasses(
                     Short updates and links worth your time.
                 </p>
 
-                <ul class="mt-8 divide-y divide-slate-200/90" role="list">
+                <p
+                    v-if="!latestPosts.length"
+                    class="mt-8 rounded-2xl border border-slate-200/80 bg-white p-6 text-sm text-slate-600"
+                >
+                    No posts yet. New notes will appear here once they are
+                    published.
+                </p>
+
+                <ul
+                    v-else
+                    class="mt-8 divide-y divide-slate-200/90"
+                    role="list"
+                >
                     <li
                         v-for="row in latestPosts"
                         :key="row.slug"
@@ -222,7 +236,6 @@ function cardHoverClasses(
                                 <span class="font-medium text-violet-600">{{
                                     row.category
                                 }}</span>
-                                · practical takeaways for your next sprint
                             </p>
                         </div>
                         <time

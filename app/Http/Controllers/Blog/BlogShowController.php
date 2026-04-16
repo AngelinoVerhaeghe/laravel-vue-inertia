@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
 use App\Models\BlogPost;
+use App\Support\Seo\SeoPayload;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -13,7 +15,7 @@ class BlogShowController extends Controller
     public function __invoke(string $slug): Response
     {
         $post = BlogPost::query()
-            ->with(['category', 'tags', 'featuredImage'])
+            ->with(['category', 'tags', 'featuredImage', 'metaOgImage'])
             ->published()
             ->where('slug', $slug)
             ->firstOrFail();
@@ -21,6 +23,14 @@ class BlogShowController extends Controller
         $featuredImageUrl = $post->featuredImage
             ? $post->featuredImage->url()
             : ($post->featured_image_path ? Storage::disk('public')->url($post->featured_image_path) : null);
+
+        $seo = $this->buildSeoPayload($post, $featuredImageUrl);
+
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => route('home')],
+            ['name' => 'Blog', 'url' => route('blog.index')],
+            ['name' => $post->title, 'url' => route('blog.show', ['slug' => $post->slug])],
+        ];
 
         return Inertia::render('Blog/Show', [
             'post' => [
@@ -38,6 +48,66 @@ class BlogShowController extends Controller
                     'slug' => $tag->slug,
                 ])->values(),
                 'bodyHtml' => $post->body_html ?? '',
+            ],
+            'breadcrumbs' => $breadcrumbs,
+            'seo' => $seo,
+        ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildSeoPayload(BlogPost $post, ?string $featuredImageUrl): array
+    {
+        $ogImage = $post->metaOgImage
+            ? $post->metaOgImage->url()
+            : $featuredImageUrl;
+
+        $description = $post->meta_description ?: Str::limit(strip_tags($post->excerpt), 200);
+        $title = $post->meta_title ?: $post->title.' — '.config('seo.site_name');
+        $canonical = route('blog.show', ['slug' => $post->slug]);
+
+        return SeoPayload::make([
+            'title' => $title,
+            'description' => $description,
+            'canonical' => $canonical,
+            'image' => $ogImage,
+            'imageAlt' => $post->title,
+            'type' => 'article',
+            'noindex' => (bool) $post->meta_noindex,
+            'article' => [
+                'publishedTime' => $post->published_at?->toIso8601String(),
+                'modifiedTime' => $post->updated_at?->toIso8601String(),
+                'section' => $post->category->name,
+                'tags' => $post->tags->pluck('name')->all(),
+            ],
+            'jsonLd' => [
+                '@context' => 'https://schema.org',
+                '@graph' => [
+                    [
+                        '@type' => 'Article',
+                        'headline' => $post->title,
+                        'description' => $description,
+                        'datePublished' => $post->published_at?->toIso8601String(),
+                        'dateModified' => $post->updated_at?->toIso8601String(),
+                        'mainEntityOfPage' => [
+                            '@type' => 'WebPage',
+                            '@id' => $canonical,
+                        ],
+                        'image' => $ogImage ? [$ogImage] : [],
+                        'articleSection' => $post->category->name,
+                        'keywords' => $post->tags->pluck('name')->all(),
+                        'publisher' => SeoPayload::organization(),
+                    ],
+                    [
+                        '@type' => 'BreadcrumbList',
+                        'itemListElement' => [
+                            ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => route('home')],
+                            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Blog', 'item' => route('blog.index')],
+                            ['@type' => 'ListItem', 'position' => 3, 'name' => $post->title, 'item' => $canonical],
+                        ],
+                    ],
+                ],
             ],
         ]);
     }

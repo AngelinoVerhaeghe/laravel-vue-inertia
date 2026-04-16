@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Seo\SeoPayload;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -46,6 +47,7 @@ class HandleInertiaRequests extends Middleware
                 'info' => fn () => $request->session()->get('info'),
                 'error' => fn () => $request->session()->get('error'),
             ],
+            'seoDefaults' => fn (): array => SeoPayload::defaults(),
         ];
     }
 }

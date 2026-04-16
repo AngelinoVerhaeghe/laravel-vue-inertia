@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import SeoHead, { type SeoPayload } from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { index as blogIndex } from '@/routes/blog';
 
@@ -17,8 +18,15 @@ export interface BlogPost {
     bodyHtml: string;
 }
 
+export interface Breadcrumb {
+    name: string;
+    url: string;
+}
+
 defineProps<{
     post: BlogPost;
+    breadcrumbs?: Breadcrumb[];
+    seo?: Partial<SeoPayload> | null;
 }>();
 
 function tagClasses(accent: string): string {
@@ -36,7 +44,7 @@ function tagClasses(accent: string): string {
 </script>
 
 <template>
-    <Head :title="`${post.title} — Stack Notes`" />
+    <SeoHead :seo="seo ?? undefined" />
 
     <MarketingLayout active-nav="blog">
         <article>
@@ -57,6 +65,50 @@ function tagClasses(accent: string): string {
                 <div
                     class="relative mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8"
                 >
+                    <nav
+                        v-if="breadcrumbs && breadcrumbs.length"
+                        class="mb-6 text-sm"
+                        aria-label="Breadcrumb"
+                    >
+                        <ol
+                            class="flex min-w-0 flex-nowrap items-center gap-1.5 overflow-hidden text-slate-500"
+                            role="list"
+                        >
+                            <li
+                                v-for="(crumb, index) in breadcrumbs"
+                                :key="crumb.url"
+                                :class="[
+                                    'flex min-w-0 items-center gap-1.5',
+                                    index === breadcrumbs.length - 1
+                                        ? 'flex-1'
+                                        : 'shrink-0',
+                                ]"
+                            >
+                                <span
+                                    v-if="index > 0"
+                                    class="shrink-0 text-slate-300"
+                                    aria-hidden="true"
+                                    >/</span
+                                >
+                                <Link
+                                    v-if="index < breadcrumbs.length - 1"
+                                    :href="crumb.url"
+                                    class="transition hover:text-teal-700"
+                                >
+                                    {{ crumb.name }}
+                                </Link>
+                                <span
+                                    v-else
+                                    class="min-w-0 truncate font-medium text-slate-700"
+                                    :title="crumb.name"
+                                    aria-current="page"
+                                >
+                                    {{ crumb.name }}
+                                </span>
+                            </li>
+                        </ol>
+                    </nav>
+
                     <Link
                         :href="blogIndex.url()"
                         class="inline-flex items-center gap-1 text-sm font-semibold text-teal-700 transition hover:text-teal-600"
@@ -133,6 +185,18 @@ function tagClasses(accent: string): string {
                         >.
                     </p>
                 </div>
+
+                <nav
+                    class="mt-10 border-t border-slate-200/80 pt-8"
+                    aria-label="Post footer"
+                >
+                    <Link
+                        :href="blogIndex.url()"
+                        class="inline-flex items-center gap-1 text-sm font-semibold text-teal-700 transition hover:text-teal-600"
+                    >
+                        ← Back to blog
+                    </Link>
+                </nav>
             </div>
         </article>
     </MarketingLayout>
