@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { create as newsletterPage } from '@/actions/App/Http/Controllers/NewsletterSubscriptionController';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { privacy } from '@/routes/legal';
 
-const lastUpdated = 'March 22, 2026';
+const lastUpdated = 'April 16, 2026';
 </script>
 
 <template>
@@ -57,7 +58,14 @@ const lastUpdated = 'March 22, 2026';
                         <li>
                             <strong class="text-slate-700">Essential</strong> —
                             required for core functionality such as security,
-                            load balancing, and session management;
+                            load balancing, and session management (including
+                            form protection on pages such as the
+                            <Link
+                                :href="newsletterPage.url()"
+                                class="font-medium text-teal-700 underline decoration-teal-600/30 underline-offset-2 hover:decoration-teal-600"
+                                >newsletter</Link
+                            >
+                            signup);
                         </li>
                         <li>
                             <strong class="text-slate-700">Preferences</strong> —
@@ -133,12 +141,21 @@ const lastUpdated = 'March 22, 2026';
                         7. More information
                     </h2>
                     <p>
-                        For how we handle personal data more broadly, see our
+                        For how we handle personal data more broadly—including
+                        email addresses when you
                         <Link
-                            :href="privacy.url()"
+                            :href="newsletterPage.url()"
+                            class="font-medium text-teal-700 underline decoration-teal-600/30 underline-offset-2 hover:decoration-teal-600"
+                            >subscribe to our newsletter</Link
+                        >
+                        —see our
+                        <Link
+                            :href="`${privacy.url()}#newsletter`"
                             class="font-medium text-teal-700 underline decoration-teal-600/30 underline-offset-2 hover:decoration-teal-600"
                             >Privacy Policy</Link
-                        >. Questions about cookies can be sent to
+                        >
+                        (section “Newsletter”). Questions about cookies can be
+                        sent to
                         <a
                             href="mailto:privacy@stacknotes.test"
                             class="font-medium text-teal-700 underline decoration-teal-600/30 underline-offset-2 hover:decoration-teal-600"

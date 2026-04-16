@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { store } from '@/actions/App/Http/Controllers/NewsletterSubscriptionController';
+import {
+    createResend,
+    store,
+} from '@/actions/App/Http/Controllers/NewsletterSubscriptionController';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { privacy } from '@/routes/legal';
-
-const page = usePage();
-
-const flashSuccess = computed(() => page.props.flash?.success ?? null);
 
 const form = useForm({
     email: '',
+    /** Honeypot — must stay empty (see StoreNewsletterSubscriberRequest). */
+    newsletter_company_website: '',
 });
 
 function submit(): void {
@@ -22,8 +22,13 @@ function submit(): void {
     <Head title="Newsletter — Stack Notes" />
 
     <MarketingLayout active-nav="newsletter">
-        <section class="relative overflow-hidden border-b border-slate-200/60 bg-white/60">
-            <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+        <section
+            class="relative overflow-hidden border-b border-slate-200/60 bg-white/60"
+        >
+            <div
+                class="pointer-events-none absolute inset-0"
+                aria-hidden="true"
+            >
                 <div
                     class="absolute -top-24 right-0 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl"
                 />
@@ -43,13 +48,13 @@ function submit(): void {
                 <h1
                     class="max-w-2xl text-4xl font-bold tracking-tight text-slate-800 sm:text-5xl"
                 >
-                    Weekly stack letter
+                    Monthly stack letter
                 </h1>
                 <p class="mt-4 max-w-2xl text-lg text-slate-600">
-                    One short email with curated links and notes on full-stack
-                    craft—APIs, frontend, databases, and shipping calmly in
-                    production. No daily blasts; we send when we have something
-                    worth your inbox.
+                    One email per month with curated links and notes on
+                    full-stack craft—APIs, frontend, databases, and shipping
+                    calmly in production. No daily blasts; we send when we have
+                    something worth your inbox.
                 </p>
             </div>
         </section>
@@ -57,18 +62,26 @@ function submit(): void {
         <section class="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
             <div class="grid gap-12 lg:grid-cols-5 lg:gap-16">
                 <div class="lg:col-span-3">
-                    <div
-                        v-if="flashSuccess"
-                        class="mb-6 rounded-xl border border-teal-200 bg-teal-50/90 px-4 py-3 text-sm text-teal-900"
-                        role="status"
-                    >
-                        {{ flashSuccess }}
-                    </div>
-
                     <form
-                        class="space-y-6 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm sm:p-8"
+                        class="relative space-y-6 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm sm:p-8"
                         @submit.prevent="submit"
                     >
+                        <div
+                            class="pointer-events-none absolute top-0 left-0 -z-10 h-px w-px overflow-hidden opacity-0"
+                            aria-hidden="true"
+                        >
+                            <label for="newsletter-company-website"
+                                >Company website</label
+                            >
+                            <input
+                                id="newsletter-company-website"
+                                v-model="form.newsletter_company_website"
+                                type="text"
+                                name="newsletter_company_website"
+                                tabindex="-1"
+                                autocomplete="off"
+                            />
+                        </div>
                         <div>
                             <label
                                 for="newsletter-email"
@@ -98,8 +111,17 @@ function submit(): void {
                             </p>
                         </div>
                         <p class="text-xs leading-relaxed text-slate-500">
-                            By subscribing you agree we may use your email to
-                            send this newsletter. See our
+                            We will email you a confirmation link—your address
+                            is only added after you confirm. Confirmation links
+                            expire after a few days; you can
+                            <Link
+                                :href="createResend.url()"
+                                class="font-medium text-teal-700 underline decoration-teal-600/30 underline-offset-2 hover:decoration-teal-600"
+                                >resend the confirmation email</Link
+                            >
+                            or subscribe again with the same address. By
+                            subscribing you agree we may use your email to send
+                            this newsletter. See our
                             <Link
                                 :href="privacy.url()"
                                 class="font-medium text-teal-700 underline decoration-teal-600/30 underline-offset-2 hover:decoration-teal-600"
@@ -111,7 +133,7 @@ function submit(): void {
                         </p>
                         <button
                             type="submit"
-                            class="w-full rounded-xl bg-linear-to-r from-teal-600 to-teal-700 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-teal-600/20 transition hover:from-teal-500 hover:to-teal-600 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                            class="w-full cursor-pointer rounded-xl bg-linear-to-r from-teal-600 to-teal-700 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-teal-600/20 transition hover:from-teal-500 hover:to-teal-600 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                             :disabled="form.processing"
                         >
                             Subscribe
@@ -133,17 +155,17 @@ function submit(): void {
                                 class="mt-4 list-inside list-disc space-y-3 text-sm text-slate-600"
                             >
                                 <li>
-                                    Roughly weekly issues while we are ramping
-                                    up—never more than one email per week unless
-                                    we announce something exceptional.
+                                    Roughly once per month—never more than one
+                                    email per month unless we announce something
+                                    exceptional.
                                 </li>
                                 <li>
                                     A handful of high-signal links plus a short
                                     note on why they matter for builders.
                                 </li>
                                 <li>
-                                    No sponsored filler or list resale; this list
-                                    is only for Stack Notes updates.
+                                    No sponsored filler or list resale; this
+                                    list is only for Stack Notes updates.
                                 </li>
                             </ul>
                         </div>
@@ -154,8 +176,8 @@ function submit(): void {
                                 Already subscribed?
                             </h2>
                             <p class="mt-2 text-sm text-slate-600">
-                                If you signed up twice by mistake, you will see a
-                                validation message—your address is only stored
+                                If you signed up twice by mistake, you will see
+                                a validation message—your address is only stored
                                 once.
                             </p>
                         </div>

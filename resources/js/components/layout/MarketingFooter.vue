@@ -10,6 +10,17 @@ function isExternal(href: string): boolean {
     return href.startsWith('http');
 }
 
+/** Below `sm`: Explore → Community → Legal first; brand uses order-last. From `sm` up: natural column order. */
+function columnOrderClass(index: number): string {
+    const orders = [
+        'order-1 sm:order-none',
+        'order-2 sm:order-none',
+        'order-3 sm:order-none',
+    ] as const;
+
+    return `${orders[index] ?? ''} sm:pl-4`.trim();
+}
+
 const socialLinks: SocialLinkItem[] = [
     { network: 'github', href: 'https://github.com/' },
     { network: 'x', href: 'https://x.com/' },
@@ -50,13 +61,16 @@ const footerColumns = [
 <template>
     <footer class="border-t border-slate-200 bg-slate-900 text-slate-400">
         <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-            <div class="mb-10 flex flex-col items-start justify-between gap-6 rounded-2xl border border-slate-700/60 bg-slate-800/60 px-6 py-6 sm:flex-row sm:items-center lg:px-8">
+            <div
+                class="mb-10 flex flex-col items-start justify-between gap-6 rounded-2xl border border-slate-700/60 bg-slate-800/60 px-6 py-6 sm:flex-row sm:items-center lg:px-8"
+            >
                 <div>
                     <p class="font-heading text-base font-semibold text-white">
                         Stay in the loop
                     </p>
                     <p class="mt-1 text-sm text-slate-400">
-                        One short weekly email on full-stack craft. No spam, unsubscribe any time.
+                        One short monthly email on full-stack craft. No spam,
+                        unsubscribe any time.
                     </p>
                 </div>
                 <Link
@@ -66,16 +80,16 @@ const footerColumns = [
                     Subscribe for free
                 </Link>
             </div>
-            <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-                <div class="lg:col-span-1">
+            <div class="grid gap-10 sm:grid-cols-2 md:grid-cols-4 md:gap-8">
+                <div class="order-last sm:order-none">
                     <p class="font-heading text-lg font-semibold text-white">
                         Stack Notes
                     </p>
                     <p class="mt-3 text-sm leading-relaxed">
                         Field notes from the stack: frontend craft, API design,
                         databases, and the glue that holds production apps
-                        together—written for developers who ship and refactor
-                        in the real world.
+                        together—written for developers who ship and refactor in
+                        the real world.
                     </p>
                     <SocialLinks
                         :links="socialLinks"
@@ -87,9 +101,9 @@ const footerColumns = [
                     </p>
                 </div>
                 <div
-                    v-for="col in footerColumns"
+                    v-for="(col, idx) in footerColumns"
                     :key="col.title"
-                    class="lg:pl-4"
+                    :class="columnOrderClass(idx)"
                 >
                     <p
                         class="font-heading text-sm font-semibold tracking-wider text-slate-300 uppercase"

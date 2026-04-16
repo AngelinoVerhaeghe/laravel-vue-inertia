@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreNewsletterSubscriberRequest extends FormRequest
+class ResendNewsletterConfirmationRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -20,10 +20,6 @@ class StoreNewsletterSubscriberRequest extends FormRequest
     {
         return [
             'email' => ['required', 'string', 'email:rfc', 'max:255'],
-            /**
-             * Honeypot: bots fill this; humans leave it empty. Laravel has no core honeypot rule;
-             * Spatie's laravel-honeypot is a popular optional package—this is the same idea without a dependency.
-             */
             'newsletter_company_website' => [
                 'nullable',
                 function (string $attribute, mixed $value, Closure $fail): void {
