@@ -4,73 +4,50 @@ import { Head, Link } from '@inertiajs/vue3';
 import { contact, newsletter } from '@/routes';
 import { index as blogIndex, show as blogShow } from '@/routes/blog';
 
-const featuredPosts = [
-    {
-        slug: 'monolith-to-modular-apis',
-        title: 'From monolith to modular APIs—without the drama',
-        excerpt:
-            'How to line up endpoints step by step, keep versioning sane, and keep your team grounded during the transition.',
-        tag: 'Backend',
-        readTime: '9 min',
-        accent: 'amber' as const,
-    },
-    {
-        slug: 'inertia-vue-spa-feel',
-        title: 'Inertia + Vue 3: SPA feel, server-side confidence',
-        excerpt:
-            'Why hybrid apps are the sweet spot for many product teams—and patterns you can steal today.',
-        tag: 'Web',
-        readTime: '7 min',
-        accent: 'primary' as const,
-    },
-    {
-        slug: 'css-design-tokens',
-        title: 'CSS that scales: design tokens in the real world',
-        excerpt:
-            'From Figma to Tailwind: naming, themes, and when you actually need a component library.',
-        tag: 'Frontend',
-        readTime: '6 min',
-        accent: 'secondary' as const,
-    },
-];
+defineProps<{
+    featuredPosts: Array<{
+        slug: string;
+        title: string;
+        excerpt: string;
+        tag: string;
+        readTime: string;
+        accent: 'amber' | 'primary' | 'secondary' | 'slate' | 'sky' | 'rose';
+    }>;
+    latestPosts: Array<{
+        slug: string;
+        title: string;
+        date: string;
+        dateTime: string;
+        category: string;
+    }>;
+}>();
 
-const latestPosts = [
-    {
-        slug: 'monolith-to-modular-apis',
-        title: 'From monolith to modular APIs—without the drama',
-        date: 'Mar 12, 2026',
-        dateTime: '2026-03-12',
-        category: 'Backend',
-    },
-    {
-        slug: 'inertia-vue-spa-feel',
-        title: 'Inertia + Vue 3: SPA feel, server-side confidence',
-        date: 'Mar 8, 2026',
-        dateTime: '2026-03-08',
-        category: 'Web',
-    },
-    {
-        slug: 'css-design-tokens',
-        title: 'CSS that scales: design tokens in the real world',
-        date: 'Mar 1, 2026',
-        dateTime: '2026-03-01',
-        category: 'Frontend',
-    },
-    {
-        slug: 'docker-compose-sanity',
-        title: 'Docker Compose for local full-stack: a sanity checklist',
-        date: 'Feb 22, 2026',
-        dateTime: '2026-02-22',
-        category: 'DevOps',
-    },
-];
-
-function tagClasses(accent: 'amber' | 'primary' | 'secondary'): string {
+function tagClasses(
+    accent: 'amber' | 'primary' | 'secondary' | 'slate' | 'sky' | 'rose',
+): string {
     const map = {
         amber: 'bg-amber-100 text-amber-900 ring-amber-200/80',
         primary: 'bg-teal-100 text-teal-900 ring-teal-200/80',
         secondary: 'bg-violet-100 text-violet-900 ring-violet-200/80',
+        slate: 'bg-slate-100 text-slate-900 ring-slate-200/80',
+        sky: 'bg-sky-100 text-sky-900 ring-sky-200/80',
+        rose: 'bg-rose-100 text-rose-900 ring-rose-200/80',
     };
+    return map[accent];
+}
+
+function cardHoverClasses(
+    accent: 'amber' | 'primary' | 'secondary' | 'slate' | 'sky' | 'rose',
+): string {
+    const map = {
+        amber: 'hover:border-amber-200/80 hover:shadow-amber-600/5',
+        primary: 'hover:border-teal-200/80 hover:shadow-teal-600/5',
+        secondary: 'hover:border-violet-200/80 hover:shadow-violet-600/5',
+        slate: 'hover:border-slate-200/80 hover:shadow-slate-600/5',
+        sky: 'hover:border-sky-200/80 hover:shadow-sky-600/5',
+        rose: 'hover:border-rose-200/80 hover:shadow-rose-600/5',
+    };
+
     return map[accent];
 }
 </script>
@@ -162,43 +139,63 @@ function tagClasses(accent: 'amber' | 'primary' | 'secondary'): string {
                 role="list"
             >
                 <li v-for="post in featuredPosts" :key="post.slug">
-                    <article
-                        class="group flex h-full flex-col rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:border-teal-200/80 hover:shadow-md hover:shadow-teal-600/5"
+                    <Link
+                        :href="blogShow.url(post.slug)"
+                        class="block h-full focus:outline-none"
                     >
-                        <span
-                            class="inline-flex w-fit rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset"
-                            :class="tagClasses(post.accent)"
+                        <article
+                            class="group flex h-full flex-col rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:shadow-md focus-visible:ring-2 focus-visible:ring-teal-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                            :class="cardHoverClasses(post.accent)"
                         >
-                            {{ post.tag }}
-                        </span>
-                        <h3
-                            class="mt-4 text-xl leading-snug font-bold text-slate-800 group-hover:text-teal-800"
-                        >
-                            <Link :href="blogShow.url(post.slug)">{{
-                                post.title
-                            }}</Link>
-                        </h3>
-                        <p
-                            class="mt-3 flex-1 text-sm leading-relaxed text-slate-600"
-                        >
-                            {{ post.excerpt }}
-                        </p>
-                        <p
-                            class="mt-4 text-xs font-medium tracking-wide text-slate-500 uppercase"
-                        >
-                            {{ post.readTime }} read
-                        </p>
-                    </article>
+                            <span
+                                class="inline-flex w-fit rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset"
+                                :class="tagClasses(post.accent)"
+                            >
+                                {{ post.tag }}
+                            </span>
+                            <h3
+                                class="mt-4 text-xl leading-snug font-bold text-slate-800 group-hover:text-teal-800"
+                            >
+                                {{ post.title }}
+                            </h3>
+                            <p
+                                class="mt-3 flex-1 text-sm leading-relaxed text-slate-600"
+                            >
+                                {{ post.excerpt }}
+                            </p>
+                            <p
+                                class="mt-4 text-xs font-medium tracking-wide text-slate-500 uppercase"
+                            >
+                                {{ post.readTime }} read
+                            </p>
+                        </article>
+                    </Link>
                 </li>
             </ul>
+
+            <p
+                v-if="!featuredPosts.length"
+                class="mt-10 rounded-2xl border border-slate-200/80 bg-white p-6 text-sm text-slate-600"
+            >
+                No featured posts yet. Mark a published post as “Featured on
+                homepage” in the admin panel to show it here.
+            </p>
         </section>
 
         <!-- Latest posts + newsletter -->
         <section
             id="newsletter"
-            class="scroll-mt-24 border-t border-slate-200/80 bg-slate-50/80 py-16"
+            class="relative scroll-mt-24 border-t border-slate-200/80 bg-slate-50/80 py-16"
         >
-            <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <div
+                class="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+                aria-hidden="true"
+            >
+                <div
+                    class="absolute right-0 bottom-10 h-[28rem] w-[28rem] translate-x-1/3 rounded-full bg-violet-300/25 blur-3xl"
+                />
+            </div>
+            <div class="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                 <h2
                     class="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl"
                 >

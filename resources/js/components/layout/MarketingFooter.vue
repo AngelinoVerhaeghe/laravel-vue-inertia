@@ -82,9 +82,14 @@ const footerColumns = [
             </div>
             <div class="grid gap-10 sm:grid-cols-2 md:grid-cols-4 md:gap-8">
                 <div class="order-last sm:order-none">
-                    <p class="font-heading text-lg font-semibold text-white">
-                        Stack Notes
-                    </p>
+                    <Link :href="home.url()" class="inline-flex items-center">
+                        <img
+                            src="/images/stack-notes-footer-logo.png"
+                            alt="Stack Notes"
+                            class="w-[160px] h-auto"
+                            loading="lazy"
+                        />
+                    </Link>
                     <p class="mt-3 text-sm leading-relaxed">
                         Field notes from the stack: frontend craft, API design,
                         databases, and the glue that holds production apps

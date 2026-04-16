@@ -6,9 +6,11 @@ A small **marketing-style** Laravel application built with **Inertia.js** and **
 
 ## Preview
 
-The image below is normal Markdown (not inside a code block), so it should render on GitHub and in most editor previews. [Open the file directly](./docs/screenshots/home.png) if it does not show.
+The images below are normal Markdown (not inside a code block), so they should render on GitHub and in most editor previews. Open the files directly if they do not show.
 
-[Home page screenshot](./docs/screenshots/home.png)
+- [Home page screenshot](./docs/screenshots/homepage.png)
+- [Home page (footer) screenshot](./docs/screenshots/homepage-footer.png)
+- [Filament dashboard screenshot](./docs/screenshots/dashboard.png)
 
 *Click the image to open it on GitHub (larger view / download).*
 
@@ -128,7 +130,7 @@ Put files under `docs/screenshots/`.
 Plain image (not clickable on GitHub):
 
 ```markdown
-![alt text](docs/screenshots/home.png)
+![alt text](docs/screenshots/homepage.png)
 ```
 
 The outer `[...](url)` is the link; the inner `![...](url)` is the image.

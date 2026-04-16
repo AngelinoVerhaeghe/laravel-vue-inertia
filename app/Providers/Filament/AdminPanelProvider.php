@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\BlogStatsOverview;
+use App\Filament\Widgets\LatestBlogPosts;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -28,8 +30,16 @@ class AdminPanelProvider extends PanelProvider
             ->path('dashboard')
             ->login()
             ->brandName('Stack Notes')
+            ->sidebarCollapsibleOnDesktop()
+            ->sidebarFullyCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Teal,
+                'teal' => Color::Teal,
+                'amber' => Color::Amber,
+                'violet' => Color::Violet,
+                'slate' => Color::Slate,
+                'sky' => Color::Sky,
+                'rose' => Color::Rose,
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
@@ -40,6 +50,8 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
+                BlogStatsOverview::class,
+                LatestBlogPosts::class,
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -41,13 +41,14 @@ const socialLinks = [
             <!-- Logo -->
             <Link
                 :href="home.url()"
-                class="group flex items-center gap-2 font-heading text-lg font-semibold tracking-tight text-slate-800"
+                class="group flex items-center"
             >
-                <span
-                    class="flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-amber-400 to-amber-600 text-sm font-bold text-white shadow-sm ring-1 ring-amber-500/20 transition group-hover:from-amber-500 group-hover:to-amber-700"
-                    >SN</span
-                >
-                <span>Stack Notes</span>
+                <img
+                    src="/images/stack-notes-header-logo.png"
+                    alt="Stack Notes"
+                    class="w-[160px] h-auto"
+                    loading="eager"
+                />
             </Link>
 
             <!-- Desktop nav -->
@@ -148,14 +149,15 @@ const socialLinks = [
             <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
                 <Link
                     :href="home.url()"
-                    class="group flex items-center gap-2 font-heading text-base font-semibold tracking-tight text-slate-800"
+                    class="group flex items-center"
                     @click="menuOpen = false"
                 >
-                    <span
-                        class="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-amber-400 to-amber-600 text-xs font-bold text-white shadow-sm ring-1 ring-amber-500/20"
-                        >SN</span
-                    >
-                    <span>Stack Notes</span>
+                    <img
+                        src="/images/stack-notes-header-logo.png"
+                        alt="Stack Notes"
+                        class="w-[160px] h-auto"
+                        loading="eager"
+                    />
                 </Link>
                 <button
                     type="button"

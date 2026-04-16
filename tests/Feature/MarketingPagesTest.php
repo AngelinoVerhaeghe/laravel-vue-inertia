@@ -3,6 +3,8 @@
 use App\Mail\NewsletterConfirmSubscription;
 use App\Mail\NewsletterIssue;
 use App\Mail\NewsletterWelcome;
+use App\Models\BlogCategory;
+use App\Models\BlogPost;
 use App\Models\NewsletterSubscriber;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
@@ -12,12 +14,17 @@ beforeEach(function (): void {
 });
 
 test('marketing and blog routes return successful responses', function () {
+    $post = BlogPost::factory()
+        ->for(BlogCategory::factory()->state(['accent' => 'primary']), 'category')
+        ->published()
+        ->create();
+
     $this->get(route('home'))->assertOk();
     $this->get(route('contact'))->assertOk();
     $this->get(route('newsletter'))->assertOk();
     $this->get(route('newsletter.resend'))->assertOk();
     $this->get(route('blog.index'))->assertOk();
-    $this->get(route('blog.show', ['slug' => 'monolith-to-modular-apis']))->assertOk();
+    $this->get(route('blog.show', ['slug' => $post->slug]))->assertOk();
 });
 
 test('newsletter subscription stores pending email and queues confirmation mail', function () {
