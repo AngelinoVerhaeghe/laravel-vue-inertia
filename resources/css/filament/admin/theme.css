@@ -1,0 +1,17 @@
+@import url('https://fonts.bunny.net/css?family=tomorrow:400,500,600,700&display=swap');
+
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+/*
+ * Align headings with the marketing site (Tomorrow) while Filament keeps Inter for UI.
+ */
+@layer base {
+    .fi-header-heading,
+    .fi-section-header-heading {
+        font-family:
+            'Tomorrow',
+            ui-sans-serif,
+            system-ui,
+            sans-serif;
+    }
+}

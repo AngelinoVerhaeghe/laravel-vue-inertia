@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { contact, home, login, newsletter, register } from '@/routes';
+import { contact, home, newsletter } from '@/routes';
 import { index as blogIndex } from '@/routes/blog';
 import { ref, watchEffect } from 'vue';
 
@@ -52,7 +52,7 @@ const socialLinks = [
 
             <!-- Desktop nav -->
             <nav
-                class="hidden items-center gap-1 md:flex"
+                class="hidden flex-1 items-center justify-center gap-1 md:flex"
                 aria-label="Main navigation"
             >
                 <Link :href="home.url()" :class="navClass(activeNav === 'home')">
@@ -77,22 +77,6 @@ const socialLinks = [
                     Newsletter
                 </Link>
             </nav>
-
-            <!-- Desktop auth buttons -->
-            <div class="hidden items-center gap-3 md:flex">
-                <Link
-                    :href="login.url()"
-                    class="rounded-lg border border-violet-200 bg-white px-3 py-2 text-sm font-medium text-violet-800 shadow-sm transition hover:border-violet-300 hover:bg-violet-50"
-                >
-                    Sign in
-                </Link>
-                <Link
-                    :href="register.url()"
-                    class="rounded-lg bg-linear-to-r from-teal-600 to-teal-700 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-teal-600/25 transition hover:from-teal-500 hover:to-teal-600"
-                >
-                    Register
-                </Link>
-            </div>
 
             <!-- Hamburger button -->
             <button
@@ -260,29 +244,6 @@ const socialLinks = [
                         </Link>
                     </li>
                 </ul>
-
-                <!-- Auth links -->
-                <div class="mt-6 border-t border-slate-100 pt-5">
-                    <p class="mb-2 px-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
-                        Account
-                    </p>
-                    <div class="space-y-2">
-                        <Link
-                            :href="login.url()"
-                            class="flex w-full items-center justify-center rounded-xl border border-violet-200 bg-white px-4 py-2.5 text-sm font-medium text-violet-800 shadow-sm transition hover:border-violet-300 hover:bg-violet-50"
-                            @click="menuOpen = false"
-                        >
-                            Sign in
-                        </Link>
-                        <Link
-                            :href="register.url()"
-                            class="flex w-full items-center justify-center rounded-xl bg-linear-to-r from-teal-600 to-teal-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-teal-600/25 transition hover:from-teal-500 hover:to-teal-600"
-                            @click="menuOpen = false"
-                        >
-                            Register
-                        </Link>
-                    </div>
-                </div>
             </nav>
 
             <!-- Social links footer -->
