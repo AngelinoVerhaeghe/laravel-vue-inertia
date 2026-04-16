@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\NewsletterConfirmationController;
 use App\Http\Controllers\NewsletterSubscriptionController;
+use App\Http\Controllers\NewsletterUnsubscribeController;
 use App\Support\BlogSamplePosts;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -12,7 +14,19 @@ Route::inertia('/forgot-password', 'Auth/ForgotPassword')->name('password.reques
 Route::inertia('/contact', 'Contact')->name('contact');
 
 Route::get('/newsletter', [NewsletterSubscriptionController::class, 'create'])->name('newsletter');
-Route::post('/newsletter', [NewsletterSubscriptionController::class, 'store'])->name('newsletter.store');
+Route::post('/newsletter', [NewsletterSubscriptionController::class, 'store'])
+    ->middleware('throttle:newsletter-subscription')
+    ->name('newsletter.store');
+Route::get('/newsletter/resend', [NewsletterSubscriptionController::class, 'createResend'])->name('newsletter.resend');
+Route::post('/newsletter/resend', [NewsletterSubscriptionController::class, 'resend'])
+    ->middleware('throttle:newsletter-resend')
+    ->name('newsletter.resend.store');
+Route::get('/newsletter/confirm/{token}', NewsletterConfirmationController::class)
+    ->name('newsletter.confirm')
+    ->where('token', '[A-Za-z0-9]+');
+Route::get('/newsletter/unsubscribe/{token}', NewsletterUnsubscribeController::class)
+    ->name('newsletter.unsubscribe')
+    ->where('token', '[A-Za-z0-9]+');
 
 Route::get('/blog', function () {
     return Inertia::render('Blog/Index', [

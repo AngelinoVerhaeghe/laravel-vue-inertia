@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { create as newsletterPage } from '@/actions/App/Http/Controllers/NewsletterSubscriptionController';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
+import { privacy } from '@/routes/legal';
 
-const lastUpdated = 'March 22, 2026';
+const lastUpdated = 'April 16, 2026';
 </script>
 
 <template>
@@ -107,7 +109,34 @@ const lastUpdated = 'March 22, 2026';
 
                 <section class="space-y-3">
                     <h2 class="font-heading text-lg font-bold text-slate-800">
-                        5. Third-party links
+                        5. Email newsletter
+                    </h2>
+                    <p>
+                        Stack Notes may offer an optional email newsletter. If you
+                        sign up, you agree that we may use the email address you
+                        provide to send you the messages described at the point of
+                        signup, subject to our
+                        <Link
+                            :href="`${privacy.url()}#newsletter`"
+                            class="font-medium text-teal-700 underline decoration-teal-600/30 underline-offset-2 hover:decoration-teal-600"
+                            >Privacy Policy</Link
+                        >
+                        (including confirmation, unsubscribe, and retention). We
+                        only send routine editorial/marketing messages after you
+                        complete any confirmation step we require. You may
+                        unsubscribe or resubscribe as described there and on our
+                        <Link
+                            :href="newsletterPage.url()"
+                            class="font-medium text-teal-700 underline decoration-teal-600/30 underline-offset-2 hover:decoration-teal-600"
+                            >newsletter</Link
+                        >
+                        pages.
+                    </p>
+                </section>
+
+                <section class="space-y-3">
+                    <h2 class="font-heading text-lg font-bold text-slate-800">
+                        6. Third-party links
                     </h2>
                     <p>
                         The Service may contain links to third-party websites or
@@ -121,7 +150,7 @@ const lastUpdated = 'March 22, 2026';
 
                 <section class="space-y-3">
                     <h2 class="font-heading text-lg font-bold text-slate-800">
-                        6. Disclaimer of warranties
+                        7. Disclaimer of warranties
                     </h2>
                     <p>
                         THE SERVICE IS PROVIDED ON AN “AS IS” AND “AS
@@ -136,7 +165,7 @@ const lastUpdated = 'March 22, 2026';
 
                 <section class="space-y-3">
                     <h2 class="font-heading text-lg font-bold text-slate-800">
-                        7. Limitation of liability
+                        8. Limitation of liability
                     </h2>
                     <p>
                         TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL
@@ -155,7 +184,7 @@ const lastUpdated = 'March 22, 2026';
 
                 <section class="space-y-3">
                     <h2 class="font-heading text-lg font-bold text-slate-800">
-                        8. Indemnification
+                        9. Indemnification
                     </h2>
                     <p>
                         You agree to defend, indemnify, and hold harmless Stack
@@ -169,7 +198,7 @@ const lastUpdated = 'March 22, 2026';
 
                 <section class="space-y-3">
                     <h2 class="font-heading text-lg font-bold text-slate-800">
-                        9. Termination
+                        10. Termination
                     </h2>
                     <p>
                         We may suspend or terminate your access to the Service at
@@ -182,7 +211,7 @@ const lastUpdated = 'March 22, 2026';
 
                 <section class="space-y-3">
                     <h2 class="font-heading text-lg font-bold text-slate-800">
-                        10. Governing law
+                        11. Governing law
                     </h2>
                     <p>
                         These Terms shall be governed by and construed in
@@ -195,7 +224,7 @@ const lastUpdated = 'March 22, 2026';
 
                 <section class="space-y-3">
                     <h2 class="font-heading text-lg font-bold text-slate-800">
-                        11. Changes to terms
+                        12. Changes to terms
                     </h2>
                     <p>
                         We reserve the right to modify these Terms at any time.
@@ -208,7 +237,7 @@ const lastUpdated = 'March 22, 2026';
 
                 <section class="space-y-3">
                     <h2 class="font-heading text-lg font-bold text-slate-800">
-                        12. Contact
+                        13. Contact
                     </h2>
                     <p>
                         For questions about these Terms, contact us at

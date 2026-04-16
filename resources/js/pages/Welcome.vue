@@ -238,28 +238,30 @@ function tagClasses(accent: 'amber' | 'primary' | 'secondary'): string {
                 </ul>
 
                 <div
-                    class="mt-10 rounded-2xl border border-amber-200/80 bg-linear-to-br from-amber-50 to-white p-6 sm:flex sm:items-center sm:justify-between sm:gap-8"
+                    class="mt-10 flex flex-col gap-5 rounded-2xl border border-amber-200/80 bg-linear-to-br from-amber-50 to-white p-5 sm:p-6 md:flex-row md:items-center md:justify-between md:gap-8"
                 >
-                    <div>
+                    <div class="min-w-0 flex-1">
                         <h3
-                            class="font-heading text-lg font-bold text-slate-800"
+                            class="font-heading text-xl font-bold text-balance text-slate-800 sm:text-2xl"
                         >
-                            Weekly stack letter
+                            Monthly stack letter
                         </h3>
-                        <p class="mt-1 text-sm text-slate-600">
+                        <p
+                            class="mt-2 max-w-prose text-sm leading-relaxed text-slate-600"
+                        >
                             One email, the best links. No spam—promise.
-                            <Link
-                                :href="newsletter.url()"
-                                class="mt-2 inline-block font-medium text-teal-700 underline decoration-teal-600/30 underline-offset-2 hover:decoration-teal-600"
-                            >
-                                Subscribe on the full page
-                            </Link>
                         </p>
-                    </div>
-                    <div class="mt-4 flex w-full max-w-md shrink-0 sm:mt-0 sm:justify-end">
                         <Link
                             :href="newsletter.url()"
-                            class="inline-flex w-full items-center justify-center rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-500 sm:w-auto"
+                            class="mt-3 inline-flex font-medium text-teal-700 underline decoration-teal-600/30 underline-offset-2 hover:decoration-teal-600"
+                        >
+                            Subscribe on the full page
+                        </Link>
+                    </div>
+                    <div class="flex w-full shrink-0 md:w-auto md:justify-end">
+                        <Link
+                            :href="newsletter.url()"
+                            class="inline-flex w-full cursor-pointer items-center justify-center rounded-xl bg-teal-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-teal-500 md:min-w-[11rem] md:py-2.5"
                         >
                             Join the list
                         </Link>
