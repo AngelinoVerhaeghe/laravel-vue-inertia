@@ -25,3 +25,8 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Local agent / IDE tooling (paths often machine-specific; do not commit)
+/.codex/
+/.agents/
+/.cursor/
