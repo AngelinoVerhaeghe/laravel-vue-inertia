@@ -24,3 +24,68 @@
         font-family: var(--font-heading);
     }
 }
+
+@layer components {
+    /* Markdown code blocks (global) */
+    [data-markdown] pre {
+        margin: 1.25rem 0;
+        overflow-x: auto;
+        border-radius: 1rem;
+        border: 1px solid rgb(226 232 240 / 0.8);
+        background: rgb(15 23 42);
+        padding: 1rem;
+    }
+
+    [data-markdown] code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+            'Liberation Mono', 'Courier New', monospace;
+        font-size: 0.875rem;
+    }
+
+    [data-markdown] pre code.hljs {
+        display: block;
+        padding: 0;
+        background: transparent;
+    }
+
+    /* highlight.js theme (Stack Notes) */
+    [data-markdown] .hljs {
+        color: rgb(226 232 240);
+    }
+
+    [data-markdown] .hljs-comment,
+    [data-markdown] .hljs-quote {
+        color: rgb(148 163 184);
+    }
+
+    [data-markdown] .hljs-keyword,
+    [data-markdown] .hljs-selector-tag,
+    [data-markdown] .hljs-literal {
+        color: rgb(94 234 212); /* teal */
+    }
+
+    [data-markdown] .hljs-string,
+    [data-markdown] .hljs-regexp,
+    [data-markdown] .hljs-template-string {
+        color: rgb(253 230 138); /* amber */
+    }
+
+    [data-markdown] .hljs-number,
+    [data-markdown] .hljs-symbol,
+    [data-markdown] .hljs-bullet {
+        color: rgb(251 191 36); /* amber */
+    }
+
+    [data-markdown] .hljs-title,
+    [data-markdown] .hljs-section,
+    [data-markdown] .hljs-function,
+    [data-markdown] .hljs-attribute {
+        color: rgb(196 181 253); /* violet */
+    }
+
+    [data-markdown] .hljs-variable,
+    [data-markdown] .hljs-params,
+    [data-markdown] .hljs-property {
+        color: rgb(147 197 253); /* sky */
+    }
+}

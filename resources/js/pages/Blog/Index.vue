@@ -23,6 +23,22 @@ function tagClasses(accent: string): string {
         amber: 'bg-amber-100 text-amber-900 ring-amber-200/80',
         primary: 'bg-teal-100 text-teal-900 ring-teal-200/80',
         secondary: 'bg-violet-100 text-violet-900 ring-violet-200/80',
+        slate: 'bg-slate-100 text-slate-900 ring-slate-200/80',
+        sky: 'bg-sky-100 text-sky-900 ring-sky-200/80',
+        rose: 'bg-rose-100 text-rose-900 ring-rose-200/80',
+    };
+
+    return map[accent] ?? map.primary;
+}
+
+function cardHoverClasses(accent: string): string {
+    const map: Record<string, string> = {
+        amber: 'hover:border-amber-200/80 hover:shadow-amber-600/5',
+        primary: 'hover:border-teal-200/80 hover:shadow-teal-600/5',
+        secondary: 'hover:border-violet-200/80 hover:shadow-violet-600/5',
+        slate: 'hover:border-slate-200/80 hover:shadow-slate-600/5',
+        sky: 'hover:border-sky-200/80 hover:shadow-sky-600/5',
+        rose: 'hover:border-rose-200/80 hover:shadow-rose-600/5',
     };
 
     return map[accent] ?? map.primary;
@@ -62,52 +78,84 @@ function tagClasses(accent: string): string {
         </section>
 
         <section class="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-            <ul class="space-y-6" role="list">
-                <li v-for="post in posts" :key="post.slug">
-                    <article
-                        class="group rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:border-teal-200/80 hover:shadow-md hover:shadow-teal-600/5 sm:flex sm:gap-8 sm:p-8"
+            <div
+                v-if="posts.length === 0"
+                class="rounded-2xl border border-slate-200/80 bg-white p-8 text-center shadow-sm"
+            >
+                <p
+                    class="inline-flex rounded-full bg-teal-100/90 px-3 py-1 text-xs font-semibold tracking-wider text-teal-900 uppercase ring-1 ring-teal-300/60"
+                >
+                    No posts yet
+                </p>
+                <h2 class="mt-4 text-2xl font-bold tracking-tight text-slate-800">
+                    The blog is getting ready.
+                </h2>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
+                    Check back soon for new notes on tech, web, and full-stack
+                    development.
+                </p>
+                <div class="mt-6 flex flex-wrap justify-center gap-3">
+                    <Link
+                        href="/"
+                        class="inline-flex items-center justify-center rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-500"
                     >
-                        <div class="min-w-0 flex-1">
-                            <span
-                                class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset"
-                                :class="tagClasses(post.accent)"
-                            >
-                                {{ post.category }}
-                            </span>
-                            <h2
-                                class="mt-3 text-xl font-bold tracking-tight text-slate-800 sm:text-2xl"
-                            >
-                                <Link
-                                    :href="blogShow.url(post.slug)"
-                                    class="transition hover:text-teal-800"
+                        Back to home
+                    </Link>
+                    <Link
+                        href="/newsletter"
+                        class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-teal-300 hover:text-teal-800"
+                    >
+                        Subscribe to updates
+                    </Link>
+                </div>
+            </div>
+
+            <ul v-else class="space-y-6" role="list">
+                <li v-for="post in posts" :key="post.slug">
+                    <Link
+                        :href="blogShow.url(post.slug)"
+                        class="block focus:outline-none"
+                    >
+                        <article
+                            class="group rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:shadow-md focus-visible:ring-2 focus-visible:ring-teal-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:flex sm:gap-8 sm:p-8"
+                            :class="cardHoverClasses(post.accent)"
+                        >
+                            <div class="min-w-0 flex-1">
+                                <span
+                                    class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset"
+                                    :class="tagClasses(post.accent)"
+                                >
+                                    {{ post.category }}
+                                </span>
+                                <h2
+                                    class="mt-3 text-xl font-bold tracking-tight text-slate-800 transition group-hover:text-teal-800 sm:text-2xl"
                                 >
                                     {{ post.title }}
-                                </Link>
-                            </h2>
-                            <p
-                                class="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base"
-                            >
-                                {{ post.excerpt }}
-                            </p>
-                            <div
-                                class="mt-4 flex flex-wrap items-center gap-3 text-xs font-medium text-slate-500 uppercase sm:text-sm"
-                            >
-                                <time
-                                    class="tabular-nums"
-                                    :datetime="post.dateTime"
-                                    >{{ post.date }}</time
+                                </h2>
+                                <p
+                                    class="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base"
                                 >
-                                <span aria-hidden="true">·</span>
-                                <span>{{ post.readTime }} read</span>
-                                <Link
-                                    :href="blogShow.url(post.slug)"
-                                    class="ml-auto font-semibold normal-case text-teal-700 transition hover:text-teal-600"
+                                    {{ post.excerpt }}
+                                </p>
+                                <div
+                                    class="mt-4 flex flex-wrap items-center gap-3 text-xs font-medium text-slate-500 uppercase sm:text-sm"
                                 >
-                                    Read article →
-                                </Link>
+                                    <time
+                                        class="tabular-nums"
+                                        :datetime="post.dateTime"
+                                        >{{ post.date }}</time
+                                    >
+                                    <span aria-hidden="true">·</span>
+                                    <span>{{ post.readTime }} read</span>
+                                    <span
+                                        class="ml-auto font-semibold normal-case text-teal-700 transition group-hover:text-teal-600"
+                                    >
+                                        Read article →
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>
+                    </Link>
                 </li>
             </ul>
         </section>

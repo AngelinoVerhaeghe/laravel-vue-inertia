@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { index as blogIndex } from '@/routes/blog';
 
 export interface BlogPost {
@@ -12,7 +12,9 @@ export interface BlogPost {
     dateTime: string;
     readTime: string;
     accent: string;
-    body: string[];
+    featuredImageUrl: string | null;
+    tags: Array<{ name: string; slug: string }>;
+    bodyHtml: string;
 }
 
 defineProps<{
@@ -24,6 +26,9 @@ function tagClasses(accent: string): string {
         amber: 'bg-amber-100 text-amber-900 ring-amber-200/80',
         primary: 'bg-teal-100 text-teal-900 ring-teal-200/80',
         secondary: 'bg-violet-100 text-violet-900 ring-violet-200/80',
+        slate: 'bg-slate-100 text-slate-900 ring-slate-200/80',
+        sky: 'bg-sky-100 text-sky-900 ring-sky-200/80',
+        rose: 'bg-rose-100 text-rose-900 ring-rose-200/80',
     };
 
     return map[accent] ?? map.primary;
@@ -83,21 +88,35 @@ function tagClasses(accent: string): string {
                         <span aria-hidden="true">·</span>
                         <span>{{ post.readTime }} read</span>
                     </p>
+
+                    <ul
+                        v-if="post.tags.length"
+                        class="mt-5 flex flex-wrap gap-2"
+                        aria-label="Tags"
+                    >
+                        <li v-for="tag in post.tags" :key="tag.slug">
+                            <span
+                                class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700 ring-1 ring-slate-200/80"
+                            >
+                                #{{ tag.name }}
+                            </span>
+                        </li>
+                    </ul>
                 </div>
             </header>
 
             <div
                 class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-14 lg:px-8"
             >
-                <div>
-                    <p
-                        v-for="(paragraph, index) in post.body"
-                        :key="index"
-                        class="mb-6 text-base text-slate-600 last:mb-0"
-                    >
-                        {{ paragraph }}
-                    </p>
-                </div>
+                <img
+                    v-if="post.featuredImageUrl"
+                    :src="post.featuredImageUrl"
+                    :alt="post.title"
+                    class="mb-10 w-full rounded-2xl border border-slate-200/80 shadow-sm"
+                    loading="lazy"
+                />
+
+                <div class="blog-markdown" data-markdown v-html="post.bodyHtml" />
 
                 <div
                     class="mt-12 rounded-2xl border border-amber-200/80 bg-linear-to-br from-amber-50 to-white p-6"
@@ -118,3 +137,99 @@ function tagClasses(accent: string): string {
         </article>
     </MarketingLayout>
 </template>
+
+<style scoped>
+.blog-markdown :deep(h1),
+.blog-markdown :deep(h2),
+.blog-markdown :deep(h3) {
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: rgb(30 41 59);
+}
+
+.blog-markdown :deep(h1) {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+}
+
+.blog-markdown :deep(h2) {
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+.blog-markdown :deep(h3) {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+}
+
+.blog-markdown :deep(p) {
+    margin-bottom: 1.25rem;
+    line-height: 1.75;
+    color: rgb(71 85 105);
+}
+
+.blog-markdown :deep(a) {
+    color: rgb(15 118 110);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.blog-markdown :deep(a:hover) {
+    color: rgb(13 148 136);
+    text-decoration: underline;
+}
+
+.blog-markdown :deep(ul),
+.blog-markdown :deep(ol) {
+    margin: 1rem 0 1.25rem;
+    padding-left: 1.25rem;
+    color: rgb(71 85 105);
+}
+
+.blog-markdown :deep(li) {
+    margin: 0.25rem 0;
+}
+
+.blog-markdown :deep(pre) {
+    margin: 1.25rem 0;
+    overflow-x: auto;
+    border-radius: 1rem;
+    border: 1px solid rgb(226 232 240 / 0.8);
+    background: rgb(15 23 42);
+    padding: 1rem;
+}
+
+.blog-markdown :deep(code) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        'Liberation Mono', 'Courier New', monospace;
+    font-size: 0.875rem;
+}
+
+.blog-markdown :deep(pre code.hljs) {
+    display: block;
+    padding: 0;
+    background: transparent;
+}
+
+.blog-markdown :deep(:not(pre) > code) {
+    border-radius: 0.5rem;
+    background: rgb(15 23 42 / 0.06);
+    padding: 0.125rem 0.375rem;
+    color: rgb(15 23 42);
+}
+
+.blog-markdown :deep(blockquote) {
+    margin: 1.25rem 0;
+    border-left: 3px solid rgb(20 184 166);
+    padding-left: 1rem;
+    color: rgb(71 85 105);
+}
+
+.blog-markdown :deep(hr) {
+    margin: 2rem 0;
+    border: 0;
+    border-top: 1px solid rgb(226 232 240 / 0.8);
+}
+</style>
