@@ -5,7 +5,10 @@ use App\Http\Controllers\Blog\BlogShowController;
 use App\Http\Controllers\NewsletterConfirmationController;
 use App\Http\Controllers\NewsletterSubscriptionController;
 use App\Http\Controllers\NewsletterUnsubscribeController;
+use App\Http\Controllers\RobotsController;
+use App\Http\Controllers\SitemapController;
 use App\Models\BlogPost;
+use App\Support\Seo\SeoPayload;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -42,9 +45,37 @@ Route::get('/', function () {
         ])
         ->values();
 
+    $organization = SeoPayload::organization();
+
+    $seo = SeoPayload::make([
+        'canonical' => route('home'),
+        'jsonLd' => [
+            '@context' => 'https://schema.org',
+            '@graph' => [
+                [
+                    '@type' => 'WebSite',
+                    'name' => (string) config('seo.site_name'),
+                    'url' => SeoPayload::absoluteUrl('/'),
+                    'description' => (string) config('seo.default_description'),
+                    'publisher' => $organization,
+                    'potentialAction' => [
+                        '@type' => 'SearchAction',
+                        'target' => [
+                            '@type' => 'EntryPoint',
+                            'urlTemplate' => SeoPayload::absoluteUrl('/blog').'?q={search_term_string}',
+                        ],
+                        'query-input' => 'required name=search_term_string',
+                    ],
+                ],
+                $organization,
+            ],
+        ],
+    ]);
+
     return Inertia::render('Welcome', [
         'featuredPosts' => $featuredPosts,
         'latestPosts' => $latestPosts,
+        'seo' => $seo,
     ]);
 })->name('home');
 Route::inertia('/contact', 'Contact')->name('contact');
@@ -70,3 +101,6 @@ Route::get('/blog/{slug}', BlogShowController::class)->name('blog.show');
 Route::inertia('/legal/privacy', 'Legal/PrivacyPolicy')->name('legal.privacy');
 Route::inertia('/legal/terms', 'Legal/TermsOfService')->name('legal.terms');
 Route::inertia('/legal/cookies', 'Legal/CookiePolicy')->name('legal.cookies');
+
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('/robots.txt', RobotsController::class)->name('robots');

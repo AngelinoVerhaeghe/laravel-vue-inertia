@@ -22,6 +22,10 @@ use Illuminate\Support\Str;
     'is_featured',
     'published_at',
     'reading_time_minutes',
+    'meta_title',
+    'meta_description',
+    'meta_noindex',
+    'meta_og_blog_image_id',
 ])]
 class BlogPost extends Model
 {
@@ -35,6 +39,7 @@ class BlogPost extends Model
         return [
             'published_at' => 'datetime',
             'is_featured' => 'boolean',
+            'meta_noindex' => 'boolean',
         ];
     }
 
@@ -74,6 +79,14 @@ class BlogPost extends Model
     public function featuredImage(): BelongsTo
     {
         return $this->belongsTo(BlogImage::class, 'featured_blog_image_id');
+    }
+
+    /**
+     * @return BelongsTo<BlogImage, $this>
+     */
+    public function metaOgImage(): BelongsTo
+    {
+        return $this->belongsTo(BlogImage::class, 'meta_og_blog_image_id');
     }
 
     /**

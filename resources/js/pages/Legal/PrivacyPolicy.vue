@@ -1,13 +1,20 @@
 <script setup lang="ts">
+import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { cookies } from '@/routes/legal';
 
 const lastUpdated = 'April 16, 2026';
 </script>
 
 <template>
-    <Head title="Privacy Policy — Stack Notes" />
+    <SeoHead
+        :seo="{
+            title: 'Privacy Policy — Stack Notes',
+            description:
+                'How Stack Notes collects, uses, and protects your personal data, including newsletter subscriptions and analytics.',
+        }"
+    />
 
     <MarketingLayout>
         <article

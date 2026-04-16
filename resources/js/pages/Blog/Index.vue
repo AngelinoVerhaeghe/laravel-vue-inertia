@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import SeoHead, { type SeoPayload } from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { show as blogShow } from '@/routes/blog';
 
 export interface BlogPostSummary {
@@ -16,6 +17,7 @@ export interface BlogPostSummary {
 
 defineProps<{
     posts: BlogPostSummary[];
+    seo?: Partial<SeoPayload> | null;
 }>();
 
 function tagClasses(accent: string): string {
@@ -46,7 +48,7 @@ function cardHoverClasses(accent: string): string {
 </script>
 
 <template>
-    <Head title="Blog — Stack Notes" />
+    <SeoHead :seo="seo ?? undefined" />
 
     <MarketingLayout active-nav="blog">
         <section class="relative overflow-hidden border-b border-slate-200/60">

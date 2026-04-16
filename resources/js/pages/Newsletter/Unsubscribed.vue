@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { home } from '@/routes';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 
 defineProps<{
     alreadyUnsubscribed: boolean;
@@ -9,7 +10,13 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Unsubscribed — Stack Notes" />
+    <SeoHead
+        :seo="{
+            title: 'Unsubscribed — Stack Notes',
+            description: 'You have been unsubscribed from the Stack Notes newsletter.',
+            noindex: true,
+        }"
+    />
 
     <MarketingLayout>
         <section class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">

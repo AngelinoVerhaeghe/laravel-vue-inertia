@@ -1,14 +1,21 @@
 <script setup lang="ts">
 import { create as newsletterPage } from '@/actions/App/Http/Controllers/NewsletterSubscriptionController';
+import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { privacy } from '@/routes/legal';
 
 const lastUpdated = 'April 16, 2026';
 </script>
 
 <template>
-    <Head title="Terms of Service — Stack Notes" />
+    <SeoHead
+        :seo="{
+            title: 'Terms of Service — Stack Notes',
+            description:
+                'The terms that govern your use of Stack Notes, including acceptable use, liability, and content licensing.',
+        }"
+    />
 
     <MarketingLayout>
         <article
@@ -215,10 +222,9 @@ const lastUpdated = 'April 16, 2026';
                     </h2>
                     <p>
                         These Terms shall be governed by and construed in
-                        accordance with the laws of the jurisdiction you
-                        designate for your organization (placeholder—replace with
-                        your actual governing law and venue), without regard to
-                        conflict of law principles.
+                        accordance with the laws applicable to the operator of
+                        the Service, without regard to conflict of law
+                        principles.
                     </p>
                 </section>
 

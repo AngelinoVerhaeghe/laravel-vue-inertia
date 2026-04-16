@@ -1,14 +1,21 @@
 <script setup lang="ts">
 import { create as newsletterPage } from '@/actions/App/Http/Controllers/NewsletterSubscriptionController';
+import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { privacy } from '@/routes/legal';
 
 const lastUpdated = 'April 16, 2026';
 </script>
 
 <template>
-    <Head title="Cookie Policy — Stack Notes" />
+    <SeoHead
+        :seo="{
+            title: 'Cookie Policy — Stack Notes',
+            description:
+                'How Stack Notes uses cookies and similar technologies, including session cookies and optional analytics.',
+        }"
+    />
 
     <MarketingLayout>
         <article
