@@ -18,6 +18,7 @@ The image below is normal Markdown (not inside a code block), so it should rende
 - **Frontend:** Vue 3, TypeScript, Inertia.js v2, Vite 8, Tailwind CSS v4
 - **Routing in the frontend:** [Laravel Wayfinder](https://github.com/laravel/wayfinder) (generated route helpers)
 - **Tests:** Pest 4
+- **Admin:** Filament v5 (panel separate from the marketing site)
 - **Local environment (optional):** Laravel Sail (Docker) with MySQL 8 and **Mailpit** (SMTP capture for development)
 
 ## What’s included
@@ -27,6 +28,33 @@ The image below is normal Markdown (not inside a code block), so it should rende
 - Contact page (form UI only; not wired to mail by default)
 - **Newsletter:** `newsletter_subscribers` in the database, double opt-in (confirmation link with expiry), welcome email after confirm, unsubscribe links in sent mail, resend-confirmation page, throttling + honeypot on public forms; `newsletter:send` command + monthly schedule for a sample issue email to confirmed subscribers
 - Legal-style pages (privacy, terms, cookies)—aligned with the newsletter behavior but still **not** legal advice; replace with your own counsel-reviewed text for production
+- **Filament admin panel** — see [Admin panel (Filament)](#admin-panel-filament) below. The marketing site does **not** expose sign-in, registration, or password-reset pages; those Inertia routes were removed in favor of the panel login.
+
+### Admin panel (Filament)
+
+The admin UI is **not** part of the Inertia marketing app. It lives under:
+
+| URL | Purpose |
+| --- | --- |
+| `/dashboard` | Filament dashboard (after login) |
+| `/dashboard/login` | Filament sign-in |
+
+**Access control:** Only one email is allowed. Set `FILAMENT_ADMIN_EMAIL` in `.env` to that address. The `users` row you log in with must use the **same** email, or you will get **403** after authentication (`App\Models\User::canAccessPanel()`).
+
+**Create the admin user** (after migrations), matching `FILAMENT_ADMIN_EMAIL`:
+
+```bash
+# With Sail (recommended here; PHP in the container includes ext-intl)
+./vendor/bin/sail artisan make:filament-user --panel=dashboard
+```
+
+Interactive prompts are easiest. For scripts or CI you can pass `--name`, `--email`, `--password` (min. 8 characters) and `--no-interaction`.
+
+Without Sail, use `php artisan make:filament-user` instead—your PHP install must include the **intl** extension (Filament requires it).
+
+**Theming:** The panel uses a custom Vite theme at `resources/css/filament/admin/theme.css` (Stack Notes branding, teal primary, heading font). It is listed in `vite.config.ts`; run `npm run build` (or `npm run dev`) so assets stay in sync.
+
+**Wayfinder:** Backend route changes can require regenerating TypeScript helpers: `php artisan wayfinder:generate`.
 
 ## Requirements
 
