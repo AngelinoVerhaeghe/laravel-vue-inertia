@@ -2,13 +2,14 @@
 import { Link } from '@inertiajs/vue3';
 import SeoHead, { type SeoPayload } from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { index as blogIndex } from '@/routes/blog';
+import { category as blogCategory, index as blogIndex, tag as blogTag } from '@/routes/blog';
 
 export interface BlogPost {
     slug: string;
     title: string;
     excerpt: string;
     category: string;
+    categorySlug: string;
     date: string;
     dateTime: string;
     readTime: string;
@@ -116,12 +117,13 @@ function tagClasses(accent: string): string {
                         ← Back to blog
                     </Link>
                     <p class="mt-8">
-                        <span
-                            class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset"
+                        <Link
+                            :href="blogCategory.url(post.categorySlug)"
+                            class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset transition hover:opacity-80"
                             :class="tagClasses(post.accent)"
                         >
                             {{ post.category }}
-                        </span>
+                        </Link>
                     </p>
                     <h1
                         class="mt-4 text-3xl font-bold tracking-tight text-slate-800 sm:text-4xl lg:text-5xl"
@@ -147,11 +149,12 @@ function tagClasses(accent: string): string {
                         aria-label="Tags"
                     >
                         <li v-for="tag in post.tags" :key="tag.slug">
-                            <span
-                                class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700 ring-1 ring-slate-200/80"
+                            <Link
+                                :href="blogTag.url(tag.slug)"
+                                class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700 ring-1 ring-slate-200/80 transition hover:bg-slate-200 hover:text-slate-900"
                             >
                                 #{{ tag.name }}
-                            </span>
+                            </Link>
                         </li>
                     </ul>
                 </div>

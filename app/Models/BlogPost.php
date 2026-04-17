@@ -31,6 +31,8 @@ class BlogPost extends Model
 {
     use HasFactory;
 
+    public const PUBLIC_PER_PAGE = 10;
+
     /**
      * @return array<string, string>
      */

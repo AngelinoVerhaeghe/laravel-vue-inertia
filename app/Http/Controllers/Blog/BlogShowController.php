@@ -38,6 +38,7 @@ class BlogShowController extends Controller
                 'title' => $post->title,
                 'excerpt' => $post->excerpt,
                 'category' => $post->category->name,
+                'categorySlug' => $post->category->slug,
                 'date' => $post->published_at->format('M j, Y'),
                 'dateTime' => $post->published_at->toDateString(),
                 'readTime' => ($post->reading_time_minutes ?? 1).' min',
