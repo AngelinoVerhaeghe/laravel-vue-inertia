@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Blog\BlogCategoryShowController;
 use App\Http\Controllers\Blog\BlogIndexController;
 use App\Http\Controllers\Blog\BlogShowController;
+use App\Http\Controllers\Blog\BlogTagShowController;
 use App\Http\Controllers\NewsletterConfirmationController;
 use App\Http\Controllers\NewsletterSubscriptionController;
 use App\Http\Controllers\NewsletterUnsubscribeController;
@@ -25,6 +27,7 @@ Route::get('/', function () {
             'title' => $post->title,
             'excerpt' => $post->excerpt,
             'tag' => $post->category->name,
+            'categorySlug' => $post->category->slug,
             'readTime' => ($post->reading_time_minutes ?? 1).' min',
             'accent' => $post->category->accent,
         ])
@@ -42,6 +45,7 @@ Route::get('/', function () {
             'date' => $post->published_at->format('M j, Y'),
             'dateTime' => $post->published_at->toDateString(),
             'category' => $post->category->name,
+            'categorySlug' => $post->category->slug,
         ])
         ->values();
 
@@ -96,6 +100,8 @@ Route::get('/newsletter/unsubscribe/{token}', NewsletterUnsubscribeController::c
     ->where('token', '[A-Za-z0-9]+');
 
 Route::get('/blog', BlogIndexController::class)->name('blog.index');
+Route::get('/blog/category/{slug}', BlogCategoryShowController::class)->name('blog.category');
+Route::get('/blog/tag/{slug}', BlogTagShowController::class)->name('blog.tag');
 Route::get('/blog/{slug}', BlogShowController::class)->name('blog.show');
 
 Route::inertia('/legal/privacy', 'Legal/PrivacyPolicy')->name('legal.privacy');

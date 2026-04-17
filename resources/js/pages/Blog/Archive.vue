@@ -3,7 +3,7 @@ import BlogPagination, { type PaginationPayload } from '@/components/blog/BlogPa
 import SeoHead, { type SeoPayload } from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { Link } from '@inertiajs/vue3';
-import { category as blogCategory, show as blogShow } from '@/routes/blog';
+import { category as blogCategory, index as blogIndex, show as blogShow } from '@/routes/blog';
 
 export interface BlogPostSummary {
     slug: string;
@@ -17,7 +17,15 @@ export interface BlogPostSummary {
     accent: string;
 }
 
+export interface ArchiveDescriptor {
+    type: 'category' | 'tag';
+    name: string;
+    slug: string;
+    accent?: string;
+}
+
 defineProps<{
+    archive: ArchiveDescriptor;
     posts: BlogPostSummary[];
     pagination: PaginationPayload;
     seo?: Partial<SeoPayload> | null;
@@ -66,18 +74,69 @@ function cardHoverClasses(accent: string): string {
             <div
                 class="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8"
             >
+                <nav class="mb-6 text-sm" aria-label="Breadcrumb">
+                    <ol
+                        class="flex flex-wrap items-center gap-1.5 text-slate-500"
+                        role="list"
+                    >
+                        <li>
+                            <Link
+                                href="/"
+                                class="transition hover:text-teal-700"
+                            >
+                                Home
+                            </Link>
+                        </li>
+                        <li aria-hidden="true" class="text-slate-300">/</li>
+                        <li>
+                            <Link
+                                :href="blogIndex.url()"
+                                class="transition hover:text-teal-700"
+                            >
+                                Blog
+                            </Link>
+                        </li>
+                        <li aria-hidden="true" class="text-slate-300">/</li>
+                        <li
+                            class="font-medium text-slate-700"
+                            aria-current="page"
+                        >
+                            {{
+                                archive.type === 'tag'
+                                    ? `#${archive.name}`
+                                    : archive.name
+                            }}
+                        </li>
+                    </ol>
+                </nav>
                 <p
-                    class="mb-3 inline-flex rounded-full bg-teal-100/90 px-3 py-1 text-xs font-semibold tracking-wider text-teal-900 uppercase ring-1 ring-teal-300/60"
+                    v-if="archive.type === 'category'"
+                    class="mb-3 inline-flex rounded-full px-3 py-1 text-xs font-semibold tracking-wider uppercase ring-1"
+                    :class="tagClasses(archive.accent ?? 'primary')"
                 >
-                    Blog
+                    Category
+                </p>
+                <p
+                    v-else
+                    class="mb-3 inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold tracking-wider text-slate-700 uppercase ring-1 ring-slate-200/80"
+                >
+                    Tag
                 </p>
                 <h1
                     class="max-w-2xl text-4xl font-bold tracking-tight text-slate-800 sm:text-5xl"
                 >
-                    Notes on tech, web & full-stack
+                    {{
+                        archive.type === 'tag'
+                            ? `#${archive.name}`
+                            : archive.name
+                    }}
                 </h1>
                 <p class="mt-4 max-w-2xl text-lg text-slate-600">
-                    Longer write-ups and practical checklists—newest first.
+                    {{
+                        archive.type === 'category'
+                            ? `Posts in the ${archive.name} category.`
+                            : `Posts tagged ${archive.name}.`
+                    }}
                 </p>
             </div>
         </section>
@@ -93,24 +152,21 @@ function cardHoverClasses(accent: string): string {
                     No posts yet
                 </p>
                 <h2 class="mt-4 text-2xl font-bold tracking-tight text-slate-800">
-                    The blog is getting ready.
+                    Nothing here just yet.
                 </h2>
                 <p class="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
-                    Check back soon for new notes on tech, web, and full-stack
-                    development.
+                    {{
+                        archive.type === 'category'
+                            ? 'No posts have been published in this category yet.'
+                            : 'No posts have been tagged with this yet.'
+                    }}
                 </p>
                 <div class="mt-6 flex flex-wrap justify-center gap-3">
                     <Link
-                        href="/"
+                        :href="blogIndex.url()"
                         class="inline-flex items-center justify-center rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-500"
                     >
-                        Back to home
-                    </Link>
-                    <Link
-                        href="/newsletter"
-                        class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-teal-300 hover:text-teal-800"
-                    >
-                        Subscribe to updates
+                        Browse all posts
                     </Link>
                 </div>
             </div>

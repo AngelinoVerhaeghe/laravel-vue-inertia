@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlogCategory;
 use App\Models\BlogPost;
+use App\Models\BlogTag;
 use Illuminate\Http\Response;
 
 class SitemapController extends Controller
@@ -31,7 +33,30 @@ class SitemapController extends Controller
                 'priority' => '0.7',
             ]);
 
-        $urls = $staticUrls->concat($postUrls);
+        $categoryUrls = BlogCategory::query()
+            ->whereHas('posts', fn ($query) => $query->published()->where('meta_noindex', false))
+            ->orderBy('name')
+            ->get()
+            ->map(fn (BlogCategory $category): array => [
+                'loc' => route('blog.category', ['slug' => $category->slug]),
+                'changefreq' => 'weekly',
+                'priority' => '0.6',
+            ]);
+
+        $tagUrls = BlogTag::query()
+            ->whereHas('posts', fn ($query) => $query->published()->where('meta_noindex', false))
+            ->orderBy('name')
+            ->get()
+            ->map(fn (BlogTag $tag): array => [
+                'loc' => route('blog.tag', ['slug' => $tag->slug]),
+                'changefreq' => 'weekly',
+                'priority' => '0.5',
+            ]);
+
+        $urls = $staticUrls
+            ->concat($postUrls)
+            ->concat($categoryUrls)
+            ->concat($tagUrls);
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";

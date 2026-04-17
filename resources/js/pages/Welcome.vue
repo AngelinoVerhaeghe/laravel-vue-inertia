@@ -3,7 +3,7 @@ import SeoHead, { type SeoPayload } from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { contact, newsletter } from '@/routes';
-import { index as blogIndex, show as blogShow } from '@/routes/blog';
+import { category as blogCategory, index as blogIndex, show as blogShow } from '@/routes/blog';
 
 defineProps<{
     featuredPosts: Array<{
@@ -11,6 +11,7 @@ defineProps<{
         title: string;
         excerpt: string;
         tag: string;
+        categorySlug: string;
         readTime: string;
         accent: 'amber' | 'primary' | 'secondary' | 'slate' | 'sky' | 'rose';
     }>;
@@ -20,6 +21,7 @@ defineProps<{
         date: string;
         dateTime: string;
         category: string;
+        categorySlug: string;
     }>;
     seo?: Partial<SeoPayload> | null;
 }>();
@@ -149,12 +151,16 @@ function cardHoverClasses(
                             class="group flex h-full flex-col rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:shadow-md focus-visible:ring-2 focus-visible:ring-teal-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                             :class="cardHoverClasses(post.accent)"
                         >
-                            <span
-                                class="inline-flex w-fit rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset"
+                            <Link
+                                :href="blogCategory.url(post.categorySlug)"
+                                as="button"
+                                type="button"
+                                class="inline-flex w-fit cursor-pointer rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset transition hover:opacity-80"
                                 :class="tagClasses(post.accent)"
+                                @click.stop
                             >
                                 {{ post.tag }}
-                            </span>
+                            </Link>
                             <h3
                                 class="mt-4 text-xl leading-snug font-bold text-slate-800 group-hover:text-teal-800"
                             >
@@ -233,9 +239,12 @@ function cardHoverClasses(
                                 {{ row.title }}
                             </Link>
                             <p class="mt-1 text-sm text-slate-600">
-                                <span class="font-medium text-violet-600">{{
-                                    row.category
-                                }}</span>
+                                <Link
+                                    :href="blogCategory.url(row.categorySlug)"
+                                    class="font-medium text-violet-600 transition hover:text-violet-500"
+                                >
+                                    {{ row.category }}
+                                </Link>
                             </p>
                         </div>
                         <time

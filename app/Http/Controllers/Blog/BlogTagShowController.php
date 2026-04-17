@@ -5,19 +5,26 @@ namespace App\Http\Controllers\Blog;
 use App\Http\Controllers\Blog\Concerns\BuildsPaginationPayload;
 use App\Http\Controllers\Controller;
 use App\Models\BlogPost;
+use App\Models\BlogTag;
 use App\Support\Seo\SeoPayload;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class BlogIndexController extends Controller
+class BlogTagShowController extends Controller
 {
     use BuildsPaginationPayload;
 
-    public function __invoke(): Response
+    public function __invoke(string $slug): Response
     {
-        $paginator = BlogPost::query()
+        $tag = BlogTag::query()
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $paginator = $tag
+            ->posts()
             ->with('category')
             ->published()
+            ->where('meta_noindex', false)
             ->latest('published_at')
             ->paginate(BlogPost::PUBLIC_PER_PAGE)
             ->withQueryString();
@@ -46,27 +53,36 @@ class BlogIndexController extends Controller
             ])
             ->all();
 
+        $baseUrl = route('blog.tag', ['slug' => $tag->slug]);
         $canonical = $paginator->currentPage() > 1
             ? $paginator->url($paginator->currentPage())
-            : route('blog.index');
+            : $baseUrl;
 
-        $title = $paginator->currentPage() > 1
-            ? 'Blog (Page '.$paginator->currentPage().') — '.config('seo.site_name')
-            : 'Blog — '.config('seo.site_name');
+        $description = "Articles tagged {$tag->name} from ".config('seo.site_name').'.';
+        $title = '#'.$tag->name.' — Blog — '.config('seo.site_name');
+
+        if ($paginator->currentPage() > 1) {
+            $title = '#'.$tag->name.' (Page '.$paginator->currentPage().') — Blog — '.config('seo.site_name');
+        }
 
         $seo = SeoPayload::make([
             'title' => $title,
-            'description' => 'Browse articles from Stack Notes on frontend, APIs, databases, DevOps, and full-stack craft.',
+            'description' => $description,
             'canonical' => $canonical,
             'type' => 'website',
             'jsonLd' => [
                 '@context' => 'https://schema.org',
                 '@graph' => [
                     [
-                        '@type' => 'Blog',
-                        'name' => (string) config('seo.site_name'),
-                        'url' => route('blog.index'),
-                        'description' => 'Field notes from the stack: frontend, APIs, databases, and DevOps.',
+                        '@type' => 'CollectionPage',
+                        'name' => '#'.$tag->name,
+                        'description' => $description,
+                        'url' => $baseUrl,
+                        'isPartOf' => [
+                            '@type' => 'Blog',
+                            'name' => (string) config('seo.site_name'),
+                            'url' => route('blog.index'),
+                        ],
                     ],
                     [
                         '@type' => 'ItemList',
@@ -79,13 +95,19 @@ class BlogIndexController extends Controller
                         'itemListElement' => [
                             ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => route('home')],
                             ['@type' => 'ListItem', 'position' => 2, 'name' => 'Blog', 'item' => route('blog.index')],
+                            ['@type' => 'ListItem', 'position' => 3, 'name' => '#'.$tag->name, 'item' => $baseUrl],
                         ],
                     ],
                 ],
             ],
         ]);
 
-        return Inertia::render('Blog/Index', [
+        return Inertia::render('Blog/Archive', [
+            'archive' => [
+                'type' => 'tag',
+                'name' => $tag->name,
+                'slug' => $tag->slug,
+            ],
             'posts' => $posts,
             'pagination' => $this->paginationPayload($paginator),
             'seo' => $seo,

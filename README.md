@@ -32,6 +32,8 @@ The images below are normal Markdown (not inside a code block), so they should r
 - Legal-style pages (privacy, terms, cookies)—aligned with the newsletter behavior but still **not** legal advice; replace with your own counsel-reviewed text for production
 - **Filament admin panel** — see [Admin panel (Filament)](#admin-panel-filament) below. The marketing site does **not** expose sign-in, registration, or password-reset pages; those Inertia routes were removed in favor of the panel login.
 - **SEO / OpenGraph / Twitter / JSON-LD** — see [SEO](#seo) below. Site-wide defaults, per-blog-post overrides editable in Filament, `sitemap.xml`, and `robots.txt`.
+- **Blog category & tag archives** — `/blog/category/{slug}` and `/blog/tag/{slug}` list every published, indexable post in that taxonomy. Category and tag chips on the homepage and blog list link to the matching archive.
+- **Pagination** — the blog index and category/tag archives paginate at `BlogPost::PUBLIC_PER_PAGE` (default 10) per page via `?page=N`. Each page is a unique, self-canonical URL with prev/next links.
 
 ### Admin panel (Filament)
 
@@ -65,8 +67,8 @@ Site-wide SEO defaults live in `config/seo.php` (driven by `SEO_*` env keys in `
 
 - Every marketing page renders meta tags, OpenGraph, Twitter cards, and an optional JSON-LD block through `resources/js/components/SeoHead.vue`.
 - Blog posts get per-post overrides in the Filament **SEO** section (meta title, meta description, social share image, `noindex`). Empty fields fall back to the post title and excerpt automatically.
-- The homepage emits `WebSite` JSON-LD; the blog index emits `Blog` JSON-LD; each blog post emits `Article` JSON-LD with publisher, section, and tags.
-- `GET /sitemap.xml` (route name `sitemap`) includes the home, blog index, contact, newsletter, legal pages, and every **published, indexable** blog post.
+- The homepage emits `WebSite` JSON-LD; the blog index emits `Blog` JSON-LD; each blog post emits `Article` JSON-LD with publisher, section, and tags; category and tag archives emit `CollectionPage` + `ItemList` JSON-LD with a `BreadcrumbList`.
+- `GET /sitemap.xml` (route name `sitemap`) includes the home, blog index, contact, newsletter, legal pages, every **published, indexable** blog post, and every category/tag archive that has at least one such post.
 - `GET /robots.txt` (route name `robots`) disallows `/dashboard*` and newsletter confirm/unsubscribe/resend paths, and points crawlers at the sitemap.
 
 ## Requirements

@@ -4,20 +4,27 @@ namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Blog\Concerns\BuildsPaginationPayload;
 use App\Http\Controllers\Controller;
+use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Support\Seo\SeoPayload;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class BlogIndexController extends Controller
+class BlogCategoryShowController extends Controller
 {
     use BuildsPaginationPayload;
 
-    public function __invoke(): Response
+    public function __invoke(string $slug): Response
     {
-        $paginator = BlogPost::query()
+        $category = BlogCategory::query()
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $paginator = $category
+            ->posts()
             ->with('category')
             ->published()
+            ->where('meta_noindex', false)
             ->latest('published_at')
             ->paginate(BlogPost::PUBLIC_PER_PAGE)
             ->withQueryString();
@@ -46,27 +53,36 @@ class BlogIndexController extends Controller
             ])
             ->all();
 
+        $baseUrl = route('blog.category', ['slug' => $category->slug]);
         $canonical = $paginator->currentPage() > 1
             ? $paginator->url($paginator->currentPage())
-            : route('blog.index');
+            : $baseUrl;
 
-        $title = $paginator->currentPage() > 1
-            ? 'Blog (Page '.$paginator->currentPage().') — '.config('seo.site_name')
-            : 'Blog — '.config('seo.site_name');
+        $description = "Articles in the {$category->name} category from ".config('seo.site_name').'.';
+        $title = $category->name.' — Blog — '.config('seo.site_name');
+
+        if ($paginator->currentPage() > 1) {
+            $title = $category->name.' (Page '.$paginator->currentPage().') — Blog — '.config('seo.site_name');
+        }
 
         $seo = SeoPayload::make([
             'title' => $title,
-            'description' => 'Browse articles from Stack Notes on frontend, APIs, databases, DevOps, and full-stack craft.',
+            'description' => $description,
             'canonical' => $canonical,
             'type' => 'website',
             'jsonLd' => [
                 '@context' => 'https://schema.org',
                 '@graph' => [
                     [
-                        '@type' => 'Blog',
-                        'name' => (string) config('seo.site_name'),
-                        'url' => route('blog.index'),
-                        'description' => 'Field notes from the stack: frontend, APIs, databases, and DevOps.',
+                        '@type' => 'CollectionPage',
+                        'name' => $category->name,
+                        'description' => $description,
+                        'url' => $baseUrl,
+                        'isPartOf' => [
+                            '@type' => 'Blog',
+                            'name' => (string) config('seo.site_name'),
+                            'url' => route('blog.index'),
+                        ],
                     ],
                     [
                         '@type' => 'ItemList',
@@ -79,13 +95,20 @@ class BlogIndexController extends Controller
                         'itemListElement' => [
                             ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => route('home')],
                             ['@type' => 'ListItem', 'position' => 2, 'name' => 'Blog', 'item' => route('blog.index')],
+                            ['@type' => 'ListItem', 'position' => 3, 'name' => $category->name, 'item' => $baseUrl],
                         ],
                     ],
                 ],
             ],
         ]);
 
-        return Inertia::render('Blog/Index', [
+        return Inertia::render('Blog/Archive', [
+            'archive' => [
+                'type' => 'category',
+                'name' => $category->name,
+                'slug' => $category->slug,
+                'accent' => $category->accent,
+            ],
             'posts' => $posts,
             'pagination' => $this->paginationPayload($paginator),
             'seo' => $seo,
