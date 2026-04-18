@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { ref, watchEffect } from 'vue';
 import { contact, home, newsletter } from '@/routes';
 import { index as blogIndex } from '@/routes/blog';
-import { ref, watchEffect } from 'vue';
 
 defineProps<{
     activeNav?: 'home' | 'blog' | 'contact' | 'newsletter';

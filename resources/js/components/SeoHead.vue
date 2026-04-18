@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, h } from 'vue';
 
 export interface SeoArticleMeta {
     publishedTime?: string | null;
@@ -74,6 +74,14 @@ const jsonLdString = computed<string | null>(() => {
 
     return JSON.stringify(jsonLd);
 });
+
+const JsonLdScript = () =>
+    jsonLdString.value
+        ? h('script', {
+              type: 'application/ld+json',
+              innerHTML: jsonLdString.value,
+          })
+        : null;
 </script>
 
 <template>
@@ -182,10 +190,5 @@ const jsonLdString = computed<string | null>(() => {
         />
     </Head>
 
-    <component
-        :is="'script'"
-        v-if="jsonLdString"
-        type="application/ld+json"
-        v-html="jsonLdString"
-    />
+    <JsonLdScript />
 </template>

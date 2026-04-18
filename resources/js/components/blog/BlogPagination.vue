@@ -48,10 +48,13 @@ const visibleLinks = computed<(PaginationLink | { ellipsis: true; key: string })
         if (previous && page - previous > 1) {
             result.push({ ellipsis: true, key: `gap-${previous}-${page}` });
         }
+
         const link = links.find((l) => l.page === page);
+
         if (link) {
             result.push(link);
         }
+
         previous = page;
     });
 
@@ -86,7 +89,7 @@ const visibleLinks = computed<(PaginationLink | { ellipsis: true; key: string })
             role="list"
         >
             <li
-                v-for="(item, index) in visibleLinks"
+                v-for="item in visibleLinks"
                 :key="'ellipsis' in item ? item.key : `page-${item.page}`"
             >
                 <span

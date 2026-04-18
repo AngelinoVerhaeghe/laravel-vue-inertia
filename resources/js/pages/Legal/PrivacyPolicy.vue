@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Link } from '@inertiajs/vue3';
 import { cookies } from '@/routes/legal';
 
 const lastUpdated = 'April 16, 2026';

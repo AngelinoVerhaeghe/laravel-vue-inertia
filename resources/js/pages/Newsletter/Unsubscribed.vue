@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { home } from '@/routes';
-import { Link } from '@inertiajs/vue3';
 
 defineProps<{
     alreadyUnsubscribed: boolean;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import SocialLinks from '@/components/SocialLinks.vue';
 import type { SocialLinkItem } from '@/components/SocialLinks.vue';
-import { Link } from '@inertiajs/vue3';
 import { contact, home, newsletter } from '@/routes';
 import { index as blogIndex } from '@/routes/blog';
 import { cookies, privacy, terms } from '@/routes/legal';

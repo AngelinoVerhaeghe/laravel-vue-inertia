@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { Link, useForm } from '@inertiajs/vue3';
 import {
     createResend,
     store,
 } from '@/actions/App/Http/Controllers/NewsletterSubscriptionController';
 import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Link, useForm } from '@inertiajs/vue3';
 import { privacy } from '@/routes/legal';
 
 const form = useForm({
