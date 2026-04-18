@@ -70,16 +70,19 @@ function cardHoverClasses(accent: string): string {
                 class="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8"
             >
                 <p
+                    v-reveal
                     class="mb-3 inline-flex rounded-full bg-teal-100/90 px-3 py-1 text-xs font-semibold tracking-wider text-teal-900 uppercase ring-1 ring-teal-300/60"
                 >
                     Blog
                 </p>
                 <h1
+                    v-reveal="1"
                     class="max-w-2xl text-4xl font-bold tracking-tight text-slate-800 sm:text-5xl"
                 >
                     Notes on tech, web & full-stack
                 </h1>
                 <p
+                    v-reveal="2"
                     class="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600"
                 >
                     Long-form tutorials, deep dives, and pragmatic checklists on
@@ -92,13 +95,14 @@ function cardHoverClasses(accent: string): string {
                     didn't work" notes.
                 </p>
 
-                <HeroTopicChips class="mt-6" />
+                <HeroTopicChips v-reveal="3" class="mt-6" />
             </div>
         </section>
 
         <section class="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
             <div
                 v-if="posts.length === 0"
+                v-reveal
                 class="rounded-2xl border border-slate-200/80 bg-white p-8 text-center shadow-sm"
             >
                 <p
@@ -130,7 +134,11 @@ function cardHoverClasses(accent: string): string {
             </div>
 
             <ul v-else class="space-y-6" role="list">
-                <li v-for="post in posts" :key="post.slug">
+                <li
+                    v-for="(post, index) in posts"
+                    :key="post.slug"
+                    v-reveal="index"
+                >
                     <Link
                         :href="blogShow.url(post.slug)"
                         class="block focus:outline-none"

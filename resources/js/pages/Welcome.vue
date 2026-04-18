@@ -79,6 +79,7 @@ function cardHoverClasses(
                 class="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
             >
                 <p
+                    v-reveal
                     class="mb-4 inline-flex items-center gap-2 rounded-full bg-amber-100/90 px-3 py-1 text-xs font-semibold tracking-wider text-amber-900 uppercase ring-1 ring-amber-300/60"
                 >
                     <span
@@ -88,12 +89,14 @@ function cardHoverClasses(
                     Tech · Web · Development · Full-stack
                 </p>
                 <h1
+                    v-reveal="1"
                     class="max-w-3xl text-4xl leading-tight font-bold tracking-tight text-slate-800 sm:text-5xl lg:text-6xl"
                 >
                     Stories for builders who want to understand the
                     <span class="text-teal-600">whole stack</span>.
                 </h1>
                 <p
+                    v-reveal="2"
                     class="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600 sm:text-xl"
                 >
                     Stack Notes is a developer blog about building modern web
@@ -108,6 +111,7 @@ function cardHoverClasses(
                     projects, not a recycled tutorial.
                 </p>
                 <p
+                    v-reveal="3"
                     class="mt-4 max-w-2xl text-base leading-relaxed text-slate-600"
                 >
                     Browse by topic below, or jump straight into the latest
@@ -116,9 +120,9 @@ function cardHoverClasses(
                     compound into shippable software.
                 </p>
 
-                <HeroTopicChips class="mt-8" />
+                <HeroTopicChips v-reveal="4" class="mt-8" />
 
-                <div class="mt-10 flex flex-wrap gap-4">
+                <div v-reveal="5" class="mt-10 flex flex-wrap gap-4">
                     <Link
                         :href="blogIndex.url()"
                         class="inline-flex items-center justify-center rounded-xl bg-amber-500 px-6 py-3 text-sm font-semibold text-amber-950 shadow-lg shadow-amber-500/30 transition hover:bg-amber-400"
@@ -138,6 +142,7 @@ function cardHoverClasses(
         <!-- Featured posts -->
         <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
             <div
+                v-reveal
                 class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
             >
                 <div>
@@ -163,7 +168,11 @@ function cardHoverClasses(
                 class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
                 role="list"
             >
-                <li v-for="post in featuredPosts" :key="post.slug">
+                <li
+                    v-for="(post, index) in featuredPosts"
+                    :key="post.slug"
+                    v-reveal="index"
+                >
                     <Link
                         :href="blogShow.url(post.slug)"
                         class="block h-full focus:outline-none"
@@ -226,16 +235,18 @@ function cardHoverClasses(
             </div>
             <div class="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                 <h2
+                    v-reveal
                     class="text-2xl font-bold tracking-tight text-slate-800 sm:text-3xl"
                 >
                     Latest notes
                 </h2>
-                <p class="mt-2 text-slate-600">
+                <p v-reveal="1" class="mt-2 text-slate-600">
                     Short updates and links worth your time.
                 </p>
 
                 <p
                     v-if="!latestPosts.length"
+                    v-reveal="2"
                     class="mt-8 rounded-2xl border border-slate-200/80 bg-white p-6 text-sm text-slate-600"
                 >
                     No posts yet. New notes will appear here once they are
@@ -244,6 +255,7 @@ function cardHoverClasses(
 
                 <ul
                     v-else
+                    v-reveal.left="2"
                     class="mt-8 divide-y divide-slate-200/90"
                     role="list"
                 >
@@ -278,6 +290,7 @@ function cardHoverClasses(
                 </ul>
 
                 <div
+                    v-reveal.right="3"
                     class="mt-10 flex flex-col gap-5 rounded-2xl border border-amber-200/80 bg-linear-to-br from-amber-50 to-white p-5 sm:p-6 md:flex-row md:items-center md:justify-between md:gap-8"
                 >
                     <div class="min-w-0 flex-1">

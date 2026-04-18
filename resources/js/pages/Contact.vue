@@ -28,16 +28,19 @@ import MarketingLayout from '@/layouts/MarketingLayout.vue';
                 class="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8"
             >
                 <p
+                    v-reveal
                     class="mb-3 inline-flex rounded-full bg-amber-100/90 px-3 py-1 text-xs font-semibold tracking-wider text-amber-900 uppercase ring-1 ring-amber-300/60"
                 >
                     Contact
                 </p>
                 <h1
+                    v-reveal="1"
                     class="max-w-2xl text-4xl font-bold tracking-tight text-slate-800 sm:text-5xl"
                 >
                     Say hello
                 </h1>
                 <p
+                    v-reveal="2"
                     class="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600"
                 >
                     Have a question about a Laravel API pattern, a Vue component
@@ -48,13 +51,13 @@ import MarketingLayout from '@/layouts/MarketingLayout.vue';
                     turn the best questions into new articles.
                 </p>
 
-                <HeroTopicChips class="mt-6" />
+                <HeroTopicChips v-reveal="3" class="mt-6" />
             </div>
         </section>
 
         <section class="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
             <div class="grid gap-12 lg:grid-cols-5 lg:gap-16">
-                <div class="lg:col-span-3">
+                <div v-reveal.left class="lg:col-span-3">
                     <form
                         class="space-y-6 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm sm:p-8"
                         action="#"
@@ -113,7 +116,7 @@ import MarketingLayout from '@/layouts/MarketingLayout.vue';
                     </form>
                 </div>
 
-                <aside class="lg:col-span-2">
+                <aside v-reveal.right="1" class="lg:col-span-2">
                     <div
                         class="rounded-2xl border border-violet-200/80 bg-linear-to-br from-violet-50/90 to-white p-6"
                     >

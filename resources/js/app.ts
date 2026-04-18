@@ -11,6 +11,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import type { DefineComponent } from 'vue';
 import '../css/app.css';
+import { vReveal } from './directives/reveal';
 
 hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('css', css);
@@ -40,6 +41,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
+            .directive('reveal', vReveal)
             .mount(el);
 
         highlightMarkdownCodeBlocks();
