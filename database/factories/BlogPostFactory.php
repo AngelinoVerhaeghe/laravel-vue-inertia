@@ -47,4 +47,11 @@ class BlogPostFactory extends Factory
             'published_at' => now()->addDay(),
         ]);
     }
+
+    public function headline(): static
+    {
+        return $this->state(fn (): array => [
+            'is_headline' => true,
+        ]);
+    }
 }
