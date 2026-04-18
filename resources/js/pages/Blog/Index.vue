@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import BlogPagination from '@/components/blog/BlogPagination.vue';
 import type {PaginationPayload} from '@/components/blog/BlogPagination.vue';
+import BlogSearchForm from '@/components/marketing/BlogSearchForm.vue';
 import HeroTopicChips from '@/components/marketing/HeroTopicChips.vue';
 import SeoHead from '@/components/SeoHead.vue';
 import type {SeoPayload} from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { category as blogCategory, show as blogShow } from '@/routes/blog';
+import { category as blogCategory, index as blogIndex, show as blogShow } from '@/routes/blog';
 
 export interface BlogPostSummary {
     slug: string;
@@ -20,11 +22,14 @@ export interface BlogPostSummary {
     accent: string;
 }
 
-defineProps<{
+const props = defineProps<{
     posts: BlogPostSummary[];
     pagination: PaginationPayload;
+    query?: string;
     seo?: Partial<SeoPayload> | null;
 }>();
+
+const isSearching = computed((): boolean => Boolean(props.query && props.query.length > 0));
 
 function tagClasses(accent: string): string {
     const map: Record<string, string> = {
@@ -95,13 +100,76 @@ function cardHoverClasses(accent: string): string {
                     didn't work" notes.
                 </p>
 
-                <HeroTopicChips v-reveal="3" class="mt-6" />
+                <BlogSearchForm
+                    v-reveal="3"
+                    :initial-query="query ?? ''"
+                    size="lg"
+                    class="mt-6"
+                />
+
+                <HeroTopicChips v-reveal="4" class="mt-6" />
             </div>
         </section>
 
         <section class="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
             <div
-                v-if="posts.length === 0"
+                v-if="isSearching"
+                v-reveal
+                class="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-teal-200/70 bg-teal-50/70 px-5 py-4 text-sm text-slate-700"
+            >
+                <p>
+                    <span class="font-semibold text-teal-900"
+                        >{{ pagination.total }}
+                        {{
+                            pagination.total === 1 ? 'result' : 'results'
+                        }}</span
+                    >
+                    for
+                    <span class="font-semibold text-slate-900"
+                        >“{{ query }}”</span
+                    >
+                </p>
+                <Link
+                    :href="blogIndex.url()"
+                    class="inline-flex items-center gap-1 text-sm font-semibold text-teal-700 hover:text-teal-600"
+                >
+                    Clear search
+                    <span aria-hidden="true">×</span>
+                </Link>
+            </div>
+
+            <div
+                v-if="posts.length === 0 && isSearching"
+                v-reveal
+                class="rounded-2xl border border-slate-200/80 bg-white p-8 text-center shadow-sm"
+            >
+                <p
+                    class="inline-flex rounded-full bg-amber-100/90 px-3 py-1 text-xs font-semibold tracking-wider text-amber-900 uppercase ring-1 ring-amber-300/60"
+                >
+                    No matches
+                </p>
+                <h2 class="mt-4 text-2xl font-bold tracking-tight text-slate-800">
+                    No posts match “{{ query }}”.
+                </h2>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
+                    Try a shorter or different keyword, or browse by topic
+                    below.
+                </p>
+                <div class="mt-6 flex justify-center">
+                    <Link
+                        :href="blogIndex.url()"
+                        class="inline-flex items-center justify-center rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-500"
+                    >
+                        Clear search
+                    </Link>
+                </div>
+                <div class="mt-6 flex justify-center">
+                    <HeroTopicChips />
+                </div>
+            </div>
+
+            <div
+                v-else-if="posts.length === 0"
                 v-reveal
                 class="rounded-2xl border border-slate-200/80 bg-white p-8 text-center shadow-sm"
             >

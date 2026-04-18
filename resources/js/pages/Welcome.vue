@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import BlogSearchForm from '@/components/marketing/BlogSearchForm.vue';
 import HeroTopicChips from '@/components/marketing/HeroTopicChips.vue';
 import SeoHead from '@/components/SeoHead.vue';
 import type {SeoPayload} from '@/components/SeoHead.vue';
@@ -122,7 +123,9 @@ function cardHoverClasses(
 
                 <HeroTopicChips v-reveal="4" class="mt-8" />
 
-                <div v-reveal="5" class="mt-10 flex flex-wrap gap-4">
+                <BlogSearchForm v-reveal="5" size="md" class="mt-8" />
+
+                <div v-reveal="6" class="mt-10 flex flex-wrap gap-4">
                     <Link
                         :href="blogIndex.url()"
                         class="inline-flex items-center justify-center rounded-xl bg-amber-500 px-6 py-3 text-sm font-semibold text-amber-950 shadow-lg shadow-amber-500/30 transition hover:bg-amber-400"
