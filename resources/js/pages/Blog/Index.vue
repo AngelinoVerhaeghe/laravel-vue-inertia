@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import BlogPagination from '@/components/blog/BlogPagination.vue';
 import type {PaginationPayload} from '@/components/blog/BlogPagination.vue';
+import HeroTopicChips from '@/components/marketing/HeroTopicChips.vue';
 import SeoHead from '@/components/SeoHead.vue';
 import type {SeoPayload} from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
@@ -78,9 +79,20 @@ function cardHoverClasses(accent: string): string {
                 >
                     Notes on tech, web & full-stack
                 </h1>
-                <p class="mt-4 max-w-2xl text-lg text-slate-600">
-                    Longer write-ups and practical checklists—newest first.
+                <p
+                    class="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600"
+                >
+                    Long-form tutorials, deep dives, and pragmatic checklists on
+                    full-stack web development. Topics span Vue 3 component
+                    patterns, Laravel API design, database performance with
+                    PostgreSQL and Redis, accessibility audits, and DevOps
+                    workflows that actually ship. Newest posts first — every
+                    article is written from production experience, with
+                    copy-pasteable code, real trade-offs, and honest "this
+                    didn't work" notes.
                 </p>
+
+                <HeroTopicChips class="mt-6" />
             </div>
         </section>
 

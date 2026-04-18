@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import HeroTopicChips from '@/components/marketing/HeroTopicChips.vue';
 import SeoHead from '@/components/SeoHead.vue';
 import type {SeoPayload} from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
@@ -95,10 +96,28 @@ function cardHoverClasses(
                 <p
                     class="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600 sm:text-xl"
                 >
-                    Articles on modern web apps, API design, databases, tooling,
-                    and everything in between—practical, no fluff, written like
-                    you’re talking to a teammate.
+                    Stack Notes is a developer blog about building modern web
+                    applications end-to-end — from
+                    <strong class="font-semibold text-slate-700">Vue 3</strong>
+                    and
+                    <strong class="font-semibold text-slate-700">Tailwind</strong>
+                    on the frontend to
+                    <strong class="font-semibold text-slate-700">Laravel</strong>
+                    APIs, PostgreSQL queries, Redis caching, and Docker-based
+                    deploys. Each post is a hands-on field note from real
+                    projects, not a recycled tutorial.
                 </p>
+                <p
+                    class="mt-4 max-w-2xl text-base leading-relaxed text-slate-600"
+                >
+                    Browse by topic below, or jump straight into the latest
+                    articles on full-stack development, performance,
+                    accessibility, and the small architectural decisions that
+                    compound into shippable software.
+                </p>
+
+                <HeroTopicChips class="mt-8" />
+
                 <div class="mt-10 flex flex-wrap gap-4">
                     <Link
                         :href="blogIndex.url()"

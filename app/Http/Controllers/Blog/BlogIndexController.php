@@ -56,7 +56,7 @@ class BlogIndexController extends Controller
 
         $seo = SeoPayload::make([
             'title' => $title,
-            'description' => 'Browse articles from Stack Notes on frontend, APIs, databases, DevOps, and full-stack craft.',
+            'description' => 'Tutorials, deep dives, and field notes on full-stack web development — Vue 3, Laravel APIs, PostgreSQL, Redis, Docker, performance, and accessibility — written from real production work.',
             'canonical' => $canonical,
             'type' => 'website',
             'jsonLd' => [

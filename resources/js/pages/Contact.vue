@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import HeroTopicChips from '@/components/marketing/HeroTopicChips.vue';
 import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
 </script>
@@ -8,7 +9,7 @@ import MarketingLayout from '@/layouts/MarketingLayout.vue';
         :seo="{
             title: 'Contact — Stack Notes',
             description:
-                'Get in touch with Stack Notes about articles, collaborations, or feedback on tutorials and field notes from the stack.',
+                'Get in touch with Stack Notes about Laravel, Vue, and full-stack web development articles, collaboration ideas, or suggestions for upcoming tutorials and field notes.',
         }"
     />
 
@@ -36,10 +37,18 @@ import MarketingLayout from '@/layouts/MarketingLayout.vue';
                 >
                     Say hello
                 </h1>
-                <p class="mt-4 max-w-2xl text-lg text-slate-600">
-                    Questions, tips for a post, or collaboration ideas—send a
-                    short note and we’ll get back to you.
+                <p
+                    class="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600"
+                >
+                    Have a question about a Laravel API pattern, a Vue component
+                    issue, or want to suggest a topic for the next deep dive?
+                    Drop a short note — collaboration ideas, corrections to
+                    existing posts, and reader questions are all welcome. We
+                    read everything that comes through the form and occasionally
+                    turn the best questions into new articles.
                 </p>
+
+                <HeroTopicChips class="mt-6" />
             </div>
         </section>
 
