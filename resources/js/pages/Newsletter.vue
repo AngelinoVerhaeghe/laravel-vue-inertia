@@ -4,6 +4,7 @@ import {
     createResend,
     store,
 } from '@/actions/App/Http/Controllers/NewsletterSubscriptionController';
+import HeroTopicChips from '@/components/marketing/HeroTopicChips.vue';
 import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { privacy } from '@/routes/legal';
@@ -24,7 +25,7 @@ function submit(): void {
         :seo="{
             title: 'Newsletter — Stack Notes',
             description:
-                'Subscribe to the Stack Notes newsletter for periodic field notes on frontend, APIs, databases, and full-stack craft.',
+                'Subscribe to the Stack Notes monthly newsletter — field notes on Vue, Laravel, PostgreSQL, Docker, and full-stack web development. One email per month, no spam.',
         }"
     />
 
@@ -57,12 +58,19 @@ function submit(): void {
                 >
                     Monthly stack letter
                 </h1>
-                <p class="mt-4 max-w-2xl text-lg text-slate-600">
-                    One email per month with curated links and notes on
-                    full-stack craft—APIs, frontend, databases, and shipping
-                    calmly in production. No daily blasts; we send when we have
+                <p
+                    class="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600"
+                >
+                    One email per month with curated links and field notes on
+                    full-stack craft — Vue and Tailwind component patterns,
+                    Laravel and API design, PostgreSQL and Redis performance,
+                    Docker and CI workflows, and the accessibility,
+                    observability, and architecture decisions that compound
+                    across releases. No daily blasts; we send when we have
                     something worth your inbox.
                 </p>
+
+                <HeroTopicChips class="mt-6" />
             </div>
         </section>
 
