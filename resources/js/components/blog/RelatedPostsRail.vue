@@ -48,14 +48,21 @@ function cardHoverClasses(accent: string): string {
 
 <template>
     <section v-if="posts.length" class="mt-14">
-        <h2 class="text-xl font-bold tracking-tight text-slate-800 sm:text-2xl">
+        <h2
+            v-reveal
+            class="text-xl font-bold tracking-tight text-slate-800 sm:text-2xl"
+        >
             {{ heading }}
         </h2>
         <ul
             class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
             role="list"
         >
-            <li v-for="post in posts" :key="post.slug">
+            <li
+                v-for="(post, index) in posts"
+                :key="post.slug"
+                v-reveal="index"
+            >
                 <Link
                     :href="blogShow.url(post.slug)"
                     class="block h-full focus:outline-none"

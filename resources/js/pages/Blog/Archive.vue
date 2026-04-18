@@ -113,6 +113,7 @@ function cardHoverClasses(accent: string): string {
                 </nav>
                 <p
                     v-if="archive.type === 'category'"
+                    v-reveal
                     class="mb-3 inline-flex rounded-full px-3 py-1 text-xs font-semibold tracking-wider uppercase ring-1"
                     :class="tagClasses(archive.accent ?? 'primary')"
                 >
@@ -120,11 +121,13 @@ function cardHoverClasses(accent: string): string {
                 </p>
                 <p
                     v-else
+                    v-reveal
                     class="mb-3 inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold tracking-wider text-slate-700 uppercase ring-1 ring-slate-200/80"
                 >
                     Tag
                 </p>
                 <h1
+                    v-reveal="1"
                     class="max-w-2xl text-4xl font-bold tracking-tight text-slate-800 sm:text-5xl"
                 >
                     {{
@@ -133,7 +136,7 @@ function cardHoverClasses(accent: string): string {
                             : archive.name
                     }}
                 </h1>
-                <p class="mt-4 max-w-2xl text-lg text-slate-600">
+                <p v-reveal="2" class="mt-4 max-w-2xl text-lg text-slate-600">
                     {{
                         archive.type === 'category'
                             ? `Posts in the ${archive.name} category.`
@@ -146,6 +149,7 @@ function cardHoverClasses(accent: string): string {
         <section class="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
             <div
                 v-if="posts.length === 0"
+                v-reveal
                 class="rounded-2xl border border-slate-200/80 bg-white p-8 text-center shadow-sm"
             >
                 <p
@@ -174,7 +178,11 @@ function cardHoverClasses(accent: string): string {
             </div>
 
             <ul v-else class="space-y-6" role="list">
-                <li v-for="post in posts" :key="post.slug">
+                <li
+                    v-for="(post, index) in posts"
+                    :key="post.slug"
+                    v-reveal="index"
+                >
                     <Link
                         :href="blogShow.url(post.slug)"
                         class="block focus:outline-none"

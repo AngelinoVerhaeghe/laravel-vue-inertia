@@ -35,6 +35,7 @@ The images below are normal Markdown (not inside a code block), so they should r
 - **Blog category & tag archives** — `/blog/category/{slug}` and `/blog/tag/{slug}` list every published, indexable post in that taxonomy. Category and tag chips on the homepage and blog list link to the matching archive.
 - **Pagination** — the blog index and category/tag archives paginate at `BlogPost::PUBLIC_PER_PAGE` (default 10) per page via `?page=N`. Each page is a unique, self-canonical URL with prev/next links.
 - **Related posts on blog show** — each post renders up to two rails below the body: **More in {Category}** (3 newest siblings) and **Tagged with {tag1, tag2}** (3 newest posts sharing at least one tag, deduped against the category rail). Either rail auto-hides when there are no matches, and the whole section is omitted for posts that are alone in their category and untagged. Excludes drafts and `noindex` posts.
+- **Scroll-reveal animations** — a tiny global `v-reveal` directive (in `resources/js/directives/reveal.ts`) fades and slides content in as it scrolls into view across the marketing pages. Built on `useIntersectionObserver` from `@vueuse/core`, one-shot per element, supports `.up`/`.down`/`.left`/`.right`/`.fade` modifiers and a numeric stagger value (e.g. `v-reveal="2"` for a 160 ms delay). Honors `prefers-reduced-motion: reduce` and disables animation entirely when set.
 
 ### Admin panel (Filament)
 
