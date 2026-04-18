@@ -55,6 +55,10 @@ class BlogPostsTable
                     ->label('Featured')
                     ->boolean()
                     ->sortable(),
+                IconColumn::make('is_headline')
+                    ->label('Headline')
+                    ->boolean()
+                    ->sortable(),
                 TextColumn::make('published_at')
                     ->label('Publish')
                     ->sortable()

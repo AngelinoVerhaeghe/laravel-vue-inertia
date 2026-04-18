@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
     'featured_image_path',
     'featured_blog_image_id',
     'is_featured',
+    'is_headline',
     'published_at',
     'reading_time_minutes',
     'meta_title',
@@ -41,6 +42,7 @@ class BlogPost extends Model
         return [
             'published_at' => 'datetime',
             'is_featured' => 'boolean',
+            'is_headline' => 'boolean',
             'meta_noindex' => 'boolean',
         ];
     }
@@ -56,6 +58,13 @@ class BlogPost extends Model
 
             // Cached HTML for fast rendering on the public site.
             $post->body_html = Str::markdown($post->body_markdown);
+
+            if ($post->is_headline === true && $post->isDirty('is_headline')) {
+                self::query()
+                    ->whereKeyNot($post->getKey() ?: 0)
+                    ->where('is_headline', true)
+                    ->update(['is_headline' => false]);
+            }
         });
     }
 

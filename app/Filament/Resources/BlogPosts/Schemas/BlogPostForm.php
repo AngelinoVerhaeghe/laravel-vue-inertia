@@ -113,6 +113,9 @@ class BlogPostForm
                         Toggle::make('is_featured')
                             ->label('Featured on homepage')
                             ->helperText('Shows in the homepage “Featured” section (published posts only).'),
+                        Toggle::make('is_headline')
+                            ->label('Pinned headline')
+                            ->helperText('Pins this post to the homepage headline slot. Toggling it on automatically unpins any other post.'),
                         Select::make('featured_blog_image_id')
                             ->label('Featured image (library)')
                             ->relationship('featuredImage', 'name')

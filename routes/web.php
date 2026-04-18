@@ -12,13 +12,24 @@ use App\Http\Controllers\SitemapController;
 use App\Models\BlogPost;
 use App\Support\Seo\SeoPayload;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    $headline = BlogPost::query()
+        ->with(['category', 'featuredImage'])
+        ->published()
+        ->orderByDesc('is_headline')
+        ->latest('published_at')
+        ->first();
+
+    $headlineKey = $headline?->getKey();
+
     $featuredPosts = BlogPost::query()
         ->with('category')
         ->published()
         ->where('is_featured', true)
+        ->when($headlineKey, fn ($builder) => $builder->whereKeyNot($headlineKey))
         ->latest('published_at')
         ->limit(3)
         ->get()
@@ -36,6 +47,7 @@ Route::get('/', function () {
     $latestPosts = BlogPost::query()
         ->with('category')
         ->published()
+        ->when($headlineKey, fn ($builder) => $builder->whereKeyNot($headlineKey))
         ->latest('published_at')
         ->limit(4)
         ->get()
@@ -48,6 +60,21 @@ Route::get('/', function () {
             'categorySlug' => $post->category->slug,
         ])
         ->values();
+
+    $headlinePost = $headline ? [
+        'slug' => $headline->slug,
+        'title' => $headline->title,
+        'excerpt' => $headline->excerpt,
+        'category' => $headline->category->name,
+        'categorySlug' => $headline->category->slug,
+        'accent' => $headline->category->accent,
+        'date' => $headline->published_at->format('M j, Y'),
+        'dateTime' => $headline->published_at->toDateString(),
+        'readTime' => ($headline->reading_time_minutes ?? 1).' min',
+        'featuredImageUrl' => $headline->featuredImage
+            ? $headline->featuredImage->url()
+            : ($headline->featured_image_path ? Storage::disk('public')->url($headline->featured_image_path) : null),
+    ] : null;
 
     $organization = SeoPayload::organization();
 
@@ -79,6 +106,7 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'featuredPosts' => $featuredPosts,
         'latestPosts' => $latestPosts,
+        'headlinePost' => $headlinePost,
         'seo' => $seo,
     ]);
 })->name('home');
