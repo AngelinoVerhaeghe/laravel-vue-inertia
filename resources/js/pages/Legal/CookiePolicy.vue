@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import { create as newsletterPage } from '@/actions/App/Http/Controllers/NewsletterSubscriptionController';
 import SeoHead from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
-import { Link } from '@inertiajs/vue3';
 import { privacy } from '@/routes/legal';
 
 const lastUpdated = 'April 16, 2026';

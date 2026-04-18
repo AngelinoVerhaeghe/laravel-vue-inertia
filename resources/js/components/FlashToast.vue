@@ -70,6 +70,7 @@ const palette = computed(() => {
             labelText: 'Notice',
         };
     }
+
     if (variant.value === 'error') {
         return {
             borderRing: 'border-rose-600/35 ring-rose-500/25 shadow-rose-900/15',

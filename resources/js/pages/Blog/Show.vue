@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import SeoHead, { type SeoPayload } from '@/components/SeoHead.vue';
+import RelatedPostsRail from '@/components/blog/RelatedPostsRail.vue';
+import type {RelatedPostCard} from '@/components/blog/RelatedPostsRail.vue';
+import SeoHead from '@/components/SeoHead.vue';
+import type {SeoPayload} from '@/components/SeoHead.vue';
 import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { category as blogCategory, index as blogIndex, tag as blogTag } from '@/routes/blog';
 
@@ -24,9 +27,22 @@ export interface Breadcrumb {
     url: string;
 }
 
+export interface RelatedPayload {
+    category: {
+        name: string;
+        slug: string;
+        posts: RelatedPostCard[];
+    } | null;
+    tags: {
+        names: string[];
+        posts: RelatedPostCard[];
+    } | null;
+}
+
 defineProps<{
     post: BlogPost;
     breadcrumbs?: Breadcrumb[];
+    related?: RelatedPayload | null;
     seo?: Partial<SeoPayload> | null;
 }>();
 
@@ -188,6 +204,19 @@ function tagClasses(accent: string): string {
                         >.
                     </p>
                 </div>
+
+                <template v-if="related && (related.category || related.tags)">
+                    <RelatedPostsRail
+                        v-if="related.category"
+                        :heading="`More in ${related.category.name}`"
+                        :posts="related.category.posts"
+                    />
+                    <RelatedPostsRail
+                        v-if="related.tags"
+                        :heading="`Tagged with ${related.tags.names.join(', ')}`"
+                        :posts="related.tags.posts"
+                    />
+                </template>
 
                 <nav
                     class="mt-10 border-t border-slate-200/80 pt-8"

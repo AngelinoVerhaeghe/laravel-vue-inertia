@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import SeoHead, { type SeoPayload } from '@/components/SeoHead.vue';
-import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { Link } from '@inertiajs/vue3';
+import SeoHead from '@/components/SeoHead.vue';
+import type {SeoPayload} from '@/components/SeoHead.vue';
+import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { contact, newsletter } from '@/routes';
 import { category as blogCategory, index as blogIndex, show as blogShow } from '@/routes/blog';
 
@@ -37,6 +38,7 @@ function tagClasses(
         sky: 'bg-sky-100 text-sky-900 ring-sky-200/80',
         rose: 'bg-rose-100 text-rose-900 ring-rose-200/80',
     };
+
     return map[accent];
 }
 

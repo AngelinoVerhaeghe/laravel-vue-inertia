@@ -32,6 +32,8 @@ class BlogShowController extends Controller
             ['name' => $post->title, 'url' => route('blog.show', ['slug' => $post->slug])],
         ];
 
+        $related = $this->buildRelatedPayload($post);
+
         return Inertia::render('Blog/Show', [
             'post' => [
                 'slug' => $post->slug,
@@ -51,8 +53,70 @@ class BlogShowController extends Controller
                 'bodyHtml' => $post->body_html ?? '',
             ],
             'breadcrumbs' => $breadcrumbs,
+            'related' => $related,
             'seo' => $seo,
         ]);
+    }
+
+    /**
+     * @return array{category: ?array<string, mixed>, tags: ?array<string, mixed>}
+     */
+    private function buildRelatedPayload(BlogPost $post): array
+    {
+        $moreInCategory = BlogPost::query()
+            ->with('category')
+            ->published()
+            ->where('meta_noindex', false)
+            ->where('blog_category_id', $post->blog_category_id)
+            ->where('id', '!=', $post->id)
+            ->latest('published_at')
+            ->limit(3)
+            ->get();
+
+        $tagIds = $post->tags->pluck('id');
+
+        $taggedWith = $tagIds->isEmpty()
+            ? collect()
+            : BlogPost::query()
+                ->with('category')
+                ->published()
+                ->where('meta_noindex', false)
+                ->where('id', '!=', $post->id)
+                ->whereNotIn('id', $moreInCategory->pluck('id'))
+                ->whereHas('tags', fn ($query) => $query->whereIn('blog_tags.id', $tagIds))
+                ->latest('published_at')
+                ->limit(3)
+                ->get();
+
+        return [
+            'category' => $moreInCategory->isNotEmpty() ? [
+                'name' => $post->category->name,
+                'slug' => $post->category->slug,
+                'posts' => $moreInCategory->map(fn (BlogPost $related): array => $this->toCardPayload($related))->values(),
+            ] : null,
+            'tags' => $taggedWith->isNotEmpty() ? [
+                'names' => $post->tags->pluck('name')->values(),
+                'posts' => $taggedWith->map(fn (BlogPost $related): array => $this->toCardPayload($related))->values(),
+            ] : null,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function toCardPayload(BlogPost $post): array
+    {
+        return [
+            'slug' => $post->slug,
+            'title' => $post->title,
+            'excerpt' => $post->excerpt,
+            'category' => $post->category->name,
+            'categorySlug' => $post->category->slug,
+            'date' => $post->published_at->format('M j, Y'),
+            'dateTime' => $post->published_at->toDateString(),
+            'readTime' => ($post->reading_time_minutes ?? 1).' min',
+            'accent' => $post->category->accent,
+        ];
     }
 
     /**

@@ -1,3 +1,4 @@
+import { createInertiaApp, router } from '@inertiajs/vue3';
 import hljs from 'highlight.js/lib/core';
 import bash from 'highlight.js/lib/languages/bash';
 import css from 'highlight.js/lib/languages/css';
@@ -6,7 +7,6 @@ import json from 'highlight.js/lib/languages/json';
 import php from 'highlight.js/lib/languages/php';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
-import { createInertiaApp, router } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import type { DefineComponent } from 'vue';

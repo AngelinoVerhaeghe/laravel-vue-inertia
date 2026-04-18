@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import BlogPagination, { type PaginationPayload } from '@/components/blog/BlogPagination.vue';
-import SeoHead, { type SeoPayload } from '@/components/SeoHead.vue';
-import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { Link } from '@inertiajs/vue3';
+import BlogPagination from '@/components/blog/BlogPagination.vue';
+import type {PaginationPayload} from '@/components/blog/BlogPagination.vue';
+import SeoHead from '@/components/SeoHead.vue';
+import type {SeoPayload} from '@/components/SeoHead.vue';
+import MarketingLayout from '@/layouts/MarketingLayout.vue';
 import { category as blogCategory, show as blogShow } from '@/routes/blog';
 
 export interface BlogPostSummary {
