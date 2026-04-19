@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Resources\BlogPosts\BlogPostResource;
+use App\Filament\Resources\BlogPosts\Tables\BlogPostsTable;
 use App\Models\BlogPost;
 use Filament\Actions\BulkActionGroup;
 use Filament\Support\Colors\Color;
@@ -31,6 +32,12 @@ class LatestBlogPosts extends TableWidget
                 TextColumn::make('category.name')
                     ->label('Category')
                     ->badge()
+                    ->color(function (BlogPost $record): string {
+                        /** @var mixed $accent */
+                        $accent = $record->category?->accent;
+
+                        return BlogPostsTable::accentBadgeColors()[is_string($accent) ? $accent : 'primary'] ?? 'teal';
+                    })
                     ->sortable(),
                 TextColumn::make('published_at')
                     ->label('Status')

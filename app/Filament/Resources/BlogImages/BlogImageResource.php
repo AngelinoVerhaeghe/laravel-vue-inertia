@@ -22,6 +22,10 @@ class BlogImageResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Blog';
 
+    protected static ?string $modelLabel = 'image';
+
+    protected static ?string $pluralModelLabel = 'images';
+
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema

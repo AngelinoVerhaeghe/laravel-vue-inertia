@@ -15,3 +15,229 @@
             sans-serif;
     }
 }
+
+/*
+ * Surface overrides — match the marketing site's slate + teal palette.
+ * Light mode uses white/slate-50 with slate-200 borders; dark mode uses
+ * slate-900/950 with slate-700/800 borders. Active nav uses teal accents.
+ */
+@layer components {
+    .fi-sidebar {
+        @apply bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-700;
+    }
+
+    /*
+     * Sidebar header (logo area) — glass to match the topbar above it.
+     */
+    .fi-sidebar-header {
+        @apply bg-white/70 backdrop-blur-xl border-b border-slate-200/80 dark:bg-slate-900/60 dark:border-slate-800/80;
+    }
+
+    .fi-sidebar-item-button {
+        @apply text-slate-600 dark:text-slate-400;
+    }
+
+    .fi-sidebar-item-active .fi-sidebar-item-button {
+        @apply bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300;
+    }
+
+    .fi-sidebar-group-label {
+        @apply text-slate-400 dark:text-slate-500;
+    }
+
+    /*
+     * Top navigation bar — frosted glass so it visually floats above the body.
+     */
+    .fi-topbar nav {
+        @apply bg-white/70 backdrop-blur-xl border-b border-slate-200/80 shadow-none dark:bg-slate-900/60 dark:border-slate-700/60;
+    }
+
+    .fi-body {
+        @apply bg-slate-50 dark:bg-slate-950;
+    }
+
+    /*
+     * Section cards (Filament Resource forms, table wrappers, dashboard panels).
+     * Glass effect: translucent slate fill + backdrop blur + slate ring so the
+     * cards feel like layered glass over the body rather than flat plates.
+     */
+    .fi-section:not(.fi-section-not-contained):not(.fi-aside) {
+        @apply bg-white/70 ring-slate-200/80 backdrop-blur-xl dark:bg-slate-900/60 dark:ring-slate-700/60;
+    }
+
+    .fi-section.fi-aside > .fi-section-content-ctn {
+        @apply bg-white/70 ring-slate-200/80 backdrop-blur-xl dark:bg-slate-900/60 dark:ring-slate-700/60;
+    }
+
+    .fi-section-has-header:not(.fi-collapsed) > .fi-section-content-ctn {
+        @apply border-slate-200/80 dark:border-slate-700/60;
+    }
+
+    .fi-section .fi-section-header-heading {
+        @apply text-slate-900 dark:text-slate-100;
+    }
+
+    .fi-section .fi-section-header-description {
+        @apply text-slate-500 dark:text-slate-400;
+    }
+
+    /*
+     * Stats overview widgets (dashboard "Total posts", "Published", etc.).
+     * Same glass treatment as section cards for consistency.
+     */
+    .fi-wi-stats-overview-stat {
+        @apply bg-white/70 ring-slate-200/80 backdrop-blur-xl dark:bg-slate-900/60 dark:ring-slate-700/60;
+    }
+
+    /*
+     * Table containers (Resource list pages: posts, tags, images, categories).
+     * On their own they're a top-level card and need glass. When nested inside
+     * a fi-section (e.g. dashboard widgets like "Latest Blog Posts") the outer
+     * section already provides the card, so we strip the inner background to
+     * avoid a double-card look.
+     */
+    .fi-ta-ctn {
+        @apply bg-white/70 ring-slate-200/80 backdrop-blur-xl dark:bg-slate-900/60 dark:ring-slate-700/60;
+    }
+
+    .fi-section .fi-ta-ctn {
+        @apply bg-transparent shadow-none ring-0 backdrop-blur-none;
+    }
+
+    /*
+     * Internal table dividers — replace Filament's default gray-200 / white-10
+     * borders with the same slate tint used by the card ring so row, header,
+     * footer, and pagination separators don't clash with the surrounding glass.
+     */
+    .fi-ta-ctn .fi-ta,
+    .fi-ta-ctn .fi-ta-content-ctn,
+    .fi-ta-ctn .fi-ta-row,
+    .fi-ta-ctn tbody {
+        @apply divide-slate-200/80! dark:divide-slate-700/60!;
+    }
+
+    .fi-ta-ctn .fi-ta-header,
+    .fi-ta-ctn .fi-ta-header-toolbar,
+    .fi-ta-ctn .fi-ta-filter-indicators,
+    .fi-ta-ctn .fi-ta-selection-indicator,
+    .fi-ta-ctn .fi-ta-reorder-indicator,
+    .fi-ta-ctn .fi-ta-content-ctn,
+    .fi-ta-ctn .fi-pagination,
+    .fi-ta-ctn .fi-ta-empty-state {
+        @apply border-slate-200/80! dark:border-slate-700/60!;
+    }
+
+    /*
+     * Scrollbars for table scroll areas (and the modal body, which can also
+     * overflow). Firefox uses scrollbar-color; WebKit/Blink uses the
+     * ::-webkit-scrollbar pseudo-elements. Both get a slim slate track + thumb
+     * so the scrollbar reads as part of the glass card instead of the OS chrome.
+     */
+    .fi-ta-content-ctn,
+    .fi-modal-window {
+        scrollbar-width: thin;
+        scrollbar-color: theme(--color-slate-300) transparent;
+    }
+
+    .dark .fi-ta-content-ctn,
+    .dark .fi-modal-window {
+        scrollbar-color: theme(--color-slate-700) transparent;
+    }
+
+    .fi-ta-content-ctn::-webkit-scrollbar,
+    .fi-modal-window::-webkit-scrollbar {
+        @apply h-2 w-2;
+    }
+
+    .fi-ta-content-ctn::-webkit-scrollbar-track,
+    .fi-modal-window::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    .fi-ta-content-ctn::-webkit-scrollbar-thumb,
+    .fi-modal-window::-webkit-scrollbar-thumb {
+        @apply rounded-full bg-slate-300/70 dark:bg-slate-700/70;
+    }
+
+    .fi-ta-content-ctn::-webkit-scrollbar-thumb:hover,
+    .fi-modal-window::-webkit-scrollbar-thumb:hover {
+        @apply bg-slate-400/80 dark:bg-slate-600/80;
+    }
+
+    .fi-ta-content-ctn::-webkit-scrollbar-corner,
+    .fi-modal-window::-webkit-scrollbar-corner {
+        @apply bg-transparent;
+    }
+
+    /*
+     * Login page (/dashboard/login) — the simple layout reuses fi-body for
+     * the page background. The card itself is .fi-simple-main; give it the
+     * same glass treatment so it reads as part of the panel's visual system.
+     */
+    .fi-simple-main {
+        @apply bg-white/70 ring-slate-200/80 backdrop-blur-xl dark:bg-slate-900/60 dark:ring-slate-700/60;
+    }
+
+    /*
+     * Dropdown panels (3-dot row actions, user menu, filter menus, etc.).
+     * Filament's vendor CSS targets `.fi-dropdown .fi-dropdown-panel` (higher
+     * specificity than a bare class), so we use `!` modifiers to win the
+     * cascade. Slightly higher opacity than section cards because dropdowns
+     * float over content and need to stay readable.
+     */
+    .fi-dropdown-panel {
+        @apply bg-white/85! ring-slate-200/80! backdrop-blur-xl dark:bg-slate-900/80! dark:ring-slate-700/60!;
+    }
+
+    /*
+     * Modal windows (View/Edit/Delete confirmation dialogs). Vendor selector
+     * is `.fi-modal > .fi-modal-window-ctn > .fi-modal-window`, hence the `!`
+     * modifiers. Sticky header/footer bars become transparent so they inherit
+     * the window glass instead of fighting it with their own opaque bg, and
+     * any nested .fi-section inside the modal drops its own card styling so
+     * the modal reads as a single glass surface rather than a card-in-a-card.
+     */
+    .fi-modal-window {
+        @apply bg-white/85! ring-slate-200/80! backdrop-blur-2xl dark:bg-slate-900/80! dark:ring-slate-700/60!;
+    }
+
+    .fi-modal-header,
+    .fi-modal-footer {
+        @apply bg-transparent! dark:bg-transparent! border-slate-200/80 dark:border-slate-700/60;
+    }
+
+    .fi-modal-window .fi-section:not(.fi-section-not-contained):not(.fi-aside) {
+        @apply bg-transparent! shadow-none ring-0! backdrop-blur-none;
+    }
+
+    .fi-modal-window .fi-section.fi-aside > .fi-section-content-ctn {
+        @apply bg-transparent! shadow-none ring-0! backdrop-blur-none;
+    }
+
+    /*
+     * Buttons.
+     *
+     * 1. Colored solid buttons (Save changes, New post, Delete) get a subtle
+     *    inner highlight + shadow so they read as raised surfaces on top of
+     *    the glass cards instead of flat-pasted shapes.
+     *
+     * 2. Filament's default "gray" / uncolored secondary buttons (Cancel,
+     *    bulk-action triggers) use bg-white/5 + ring-white/20 in dark mode,
+     *    which all but disappears against the slate-950 body. Swap in a
+     *    visible slate fill + slate ring so secondary actions read clearly
+     *    next to a primary teal CTA.
+     */
+    .fi-btn.fi-color:not(.fi-outlined) {
+        @apply shadow-sm ring-1 ring-inset ring-white/10;
+    }
+
+    .dark .fi-btn:not(.fi-color):not(.fi-outlined),
+    .dark .fi-btn.fi-color-gray:not(.fi-outlined) {
+        @apply bg-slate-800! ring-slate-600!;
+    }
+
+    .dark .fi-btn:not(.fi-color):not(.fi-outlined):not(.fi-disabled):not([disabled]):hover,
+    .dark .fi-btn.fi-color-gray:not(.fi-outlined):not(.fi-disabled):not([disabled]):hover {
+        @apply bg-slate-700!;
+    }
+}
