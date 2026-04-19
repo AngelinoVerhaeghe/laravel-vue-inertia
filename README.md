@@ -31,6 +31,7 @@ The images below are normal Markdown (not inside a code block), so they should r
 - **Newsletter:** `newsletter_subscribers` in the database, double opt-in (confirmation link with expiry), welcome email after confirm, unsubscribe links in sent mail, resend-confirmation page, throttling + honeypot on public forms; `newsletter:send` command + monthly schedule for a sample issue email to confirmed subscribers
 - Legal-style pages (privacy, terms, cookies)—aligned with the newsletter behavior but still **not** legal advice; replace with your own counsel-reviewed text for production
 - **Filament admin panel** — see [Admin panel (Filament)](#admin-panel-filament) below. The marketing site does **not** expose sign-in, registration, or password-reset pages; those Inertia routes were removed in favor of the panel login.
+- **Site-aligned Filament theme** — the admin panel is themed to match the marketing site: Stack Notes header/footer logos in the sidebar, slate + teal surface palette (sidebar / topbar / body / form sections), Tomorrow heading font, and the standard Filament dark/light toggle in the user menu (defaults to dark). The login page is also restyled into a slate-tinted card consistent with the rest of the panel.
 - **SEO / OpenGraph / Twitter / JSON-LD** — see [SEO](#seo) below. Site-wide defaults, per-blog-post overrides editable in Filament, `sitemap.xml`, and `robots.txt`.
 - **Blog category & tag archives** — `/blog/category/{slug}` and `/blog/tag/{slug}` list every published, indexable post in that taxonomy. Category and tag chips on the homepage and blog list link to the matching archive.
 - **Pagination** — the blog index and category/tag archives paginate at `BlogPost::PUBLIC_PER_PAGE` (default 10) per page via `?page=N`. Each page is a unique, self-canonical URL with prev/next links.
@@ -61,7 +62,18 @@ Interactive prompts are easiest. For scripts or CI you can pass `--name`, `--ema
 
 Without Sail, use `php artisan make:filament-user` instead—your PHP install must include the **intl** extension (Filament requires it).
 
-**Theming:** The panel uses a custom Vite theme at `resources/css/filament/admin/theme.css` (Stack Notes branding, teal primary, heading font). It is listed in `vite.config.ts`; run `npm run build` (or `npm run dev`) so assets stay in sync.
+**Theming:** The panel uses a custom Vite theme at `resources/css/filament/admin/theme.css` aligned with the marketing site:
+
+- **Brand logos & favicon** — `images/stack-notes-header-logo.png` in light mode, `images/stack-notes-footer-logo.png` in dark mode (set via `brandLogo()` / `darkModeBrandLogo()` in `AdminPanelProvider`). The same `favicon.ico` used by the marketing site is wired into the panel via `favicon()` so admin tabs no longer show the browser default.
+- **Surface palette (glass)** — sidebar header, topbar, section cards, stat widgets, table containers, dropdown panels, and modal windows all use a translucent slate fill + `backdrop-blur` + slate ring to read as layered glass over the body. The login card gets the same treatment so it feels like a continuation of the panel rather than a vanilla Filament card.
+- **Tables** — internal row, header, footer, and pagination dividers are overridden to slate (matching the surrounding ring instead of Filament's default `gray-200` / `white/10`), and the horizontal scroll bar inside `fi-ta-content-ctn` is restyled (slim, slate thumb, transparent track) so it stops looking like raw OS chrome.
+- **Buttons** — solid colored buttons (Save / New / Delete) get a 1px inset white highlight + soft shadow so they sit visibly raised on top of the glass; secondary "gray" buttons (Cancel) get a slate-800 fill + slate-600 ring in dark mode so they remain readable next to a primary CTA.
+- **Active-nav accent** — teal-50 / teal-700 in light, teal-900/30 / teal-300 in dark.
+- **Theme mode** — defaults to dark; the standard Filament sun/moon toggle in the user menu lets users switch.
+- **Navigation grouping** — all four blog resources (Posts / Categories / Tags / Images) sit under a single "Blog" sidebar group, with `modelLabel` / `pluralModelLabel` overridden so list pages and breadcrumbs read as plain "Posts" / "Categories" etc. rather than "Blog Posts".
+- **Typography** — Tomorrow on Filament headings (Inter elsewhere) for continuity with the marketing site.
+
+The theme file is listed in `vite.config.ts`; run `npm run build` (or `npm run dev`) so assets stay in sync.
 
 **Wayfinder:** Backend route changes can require regenerating TypeScript helpers: `php artisan wayfinder:generate`.
 

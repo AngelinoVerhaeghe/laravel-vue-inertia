@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Widgets\BlogStatsOverview;
 use App\Filament\Widgets\LatestBlogPosts;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -30,6 +31,11 @@ class AdminPanelProvider extends PanelProvider
             ->path('dashboard')
             ->login()
             ->brandName('Stack Notes')
+            ->brandLogo(asset('images/stack-notes-header-logo.png'))
+            ->darkModeBrandLogo(asset('images/stack-notes-footer-logo.png'))
+            ->brandLogoHeight('2rem')
+            ->favicon(asset('favicon.ico'))
+            ->defaultThemeMode(ThemeMode::Dark)
             ->sidebarCollapsibleOnDesktop()
             ->sidebarFullyCollapsibleOnDesktop()
             ->colors([

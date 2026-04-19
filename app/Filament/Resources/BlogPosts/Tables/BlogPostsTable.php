@@ -19,9 +19,13 @@ use Illuminate\Database\Eloquent\Model;
 class BlogPostsTable
 {
     /**
+     * Maps a category accent token (stored on BlogCategory) to a Filament badge
+     * color name. Public so widgets (e.g. LatestBlogPosts) can reuse the same
+     * source of truth instead of redefining the palette.
+     *
      * @return array<string, string>
      */
-    private static function accentBadgeColors(): array
+    public static function accentBadgeColors(): array
     {
         return [
             'primary' => 'teal',

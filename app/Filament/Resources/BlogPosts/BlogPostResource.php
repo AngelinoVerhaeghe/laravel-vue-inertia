@@ -22,6 +22,10 @@ class BlogPostResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Blog';
 
+    protected static ?string $modelLabel = 'post';
+
+    protected static ?string $pluralModelLabel = 'posts';
+
     protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Schema $schema): Schema
